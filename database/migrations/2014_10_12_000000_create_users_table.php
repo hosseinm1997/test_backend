@@ -24,6 +24,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('banned_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
+
+            $table->index('mobile');
+            $table->index('national_code');
         });
     }
 
