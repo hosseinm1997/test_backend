@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Requests\RegisterRequest;
+use Infrastructure\Service\FarazSms;
 
 class UserController extends Controller
 {
@@ -13,20 +14,34 @@ class UserController extends Controller
 
         // new user
         if ($user == null) {
-            $this->registerUser($request);
-            // send sms
+            try {
+                $this->registerUser($request);
+                $smsService = new FarazSms();
+
+                $otp = $this->generateOtp();
+                $result = $smsService->sendSmsByPattern(
+                    $request->mobile, array('code' => $otp)
+                );
+
+                if (!is_numeric($result)) {
+                    abort(501, 'خطا: سامانه ثبت نام دچار اختلال شده است');
+                }
+
+            } catch (\Throwable $throwable) {
+                throw $throwable;
+            }
         }
 
         $matching = $this->isMatchingUser($user, $request);
 
         if ($matching == false) {
-            abort(422,  'user is already exist');
+            abort(422, 'user is already exist');
         }
 
         if ($user->mobile_verified_at == null) {
             //send sms
         } else {
-            abort(422,  'user is already exist');
+            abort(422, 'user is already exist');
         }
 
 
@@ -59,5 +74,12 @@ class UserController extends Controller
         }
 
         return $matching;
+    }
+
+    function generateOtp()
+    {
+        $digits = config('sms_driver.randomNumber.digits');;
+
+        return rand(pow(10, $digits - 1), pow(10, $digits) - 1);
     }
 }

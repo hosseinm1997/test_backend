@@ -1,8 +1,8 @@
 <?php
 return [
     'farazsms' => [
-        'username' => 'reseller09027818262',
-        'password' => 'fartakvira2021@',
+        'username' => 'ali09122967321',
+        'password' => 'bakhtiyariali12',
         'address' => [
             'pattern' =>"https://ippanel.com/patterns/pattern?username="
         ],
@@ -12,5 +12,9 @@ return [
         'patterns' => [
             'otp' => "thv37ghfb6"
         ]
-        ]
+        ],
+    'randomNumber' =>
+    [
+        'digits' => 5
+    ]
     ];
