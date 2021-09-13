@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,10 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('make_json')->group(function () {
+    Route::get('register',[UserController::class, 'checkDuplicateUser']);
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('test', function () {
             return 'ok';
         });
     });
-});
