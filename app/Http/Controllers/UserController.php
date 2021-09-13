@@ -24,7 +24,7 @@ class UserController extends Controller
                 );
 
                 if (!is_numeric($result)) {
-                    abort(501, 'خطا: سامانه ثبت نام دچار اختلال شده است');
+                    abort(501, 'خطا: سامانه پیامکی دچار اختلال شده است لطفا بعدا تلاش کنید');
                 }
 
             } catch (\Throwable $throwable) {
