@@ -17,10 +17,10 @@ class CreateVerificationCodes extends Migration
             $table->id();
             $table->string('mobile', 11);
             $table->string('code', 5);
-            $table->timestamp('verified_at');
+            $table->timestamp('used_at')->nullable();
             $table->timestamps();
 
-            $table->index(['mobile', 'verified_at']);
+            $table->index(['mobile', 'used_at']);
         });
     }
 
