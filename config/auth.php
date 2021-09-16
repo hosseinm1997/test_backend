@@ -114,4 +114,8 @@ return [
 
     'password_timeout' => 10800,
 
+    // Time limit for sending code(sms)
+
+    'verification_sms_timeout' => '2' //min
+
 ];
