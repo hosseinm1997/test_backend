@@ -19,8 +19,9 @@ class EnumerationSeeder extends Seeder
         $data = array_merge(
             Enumerations\OrganizationTypeEnums::provideDataToSeed(),
             Enumerations\OrganizationCategoryEnums::provideDataToSeed(),
+            Enumerations\OrganizationStatusEnums::provideDataToSeed(),
         );
 
-        Enumeration::query()->upsert($data, 'id');
+        Enumeration::query()->insert($data);
     }
 }
