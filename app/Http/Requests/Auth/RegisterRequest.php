@@ -24,7 +24,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'mobile' => 'required|min:11|not_regex:"/^09[0-9]{9}$/" ',
+            'mobile' => 'required|min:11|max:11|not_regex:"/^09[0-9]{9}$/" ',
             'nationalCode' => 'required|min:10'
         ];
     }
