@@ -44,6 +44,6 @@ class EnumExistsRule implements Rule
      */
     public function message()
     {
-        return 'Invalid Enum :value';
+        return 'مقدار :value برای مشخصه :attribute صحیح نمی باشد.';
     }
 }
