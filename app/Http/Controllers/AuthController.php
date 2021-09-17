@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Models\User;
-use App\Models\VerificationCode;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Infrastructure\Service\FarazSms;
+use App\Models\VerificationCode;
+use Illuminate\Http\Request;
+use App\Models\User;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -19,20 +19,7 @@ class AuthController extends Controller
         if ($user == null) {
             try {
                 $this->registerUser($request);
-                $smsService = new FarazSms();
-
-                $otp = $this->generateOtp();
-                $result = $smsService->sendSmsByPattern(
-                    $request->mobile, array('code' => $otp)
-                );
-                $this->saveVerificationCode($request->mobile, $otp);
-
-                //todo: After launch sentry or log change the report
-                if (!is_numeric($result)) {
-                    abort(500, 'خطا: سامانه پیامکی دچار اختلال شده است لطفا بعدا تلاش کنید.');
-                }
-
-                return ["message" => "کد تایید با موفقیت ارسال شد", 'result' => true];
+                return $this->preparingToVerification($request->mobile);
 
             } catch (\Throwable $throwable) {
                 throw $throwable;
@@ -41,28 +28,25 @@ class AuthController extends Controller
 
         $matching = $this->isMatchingUser($user, $request);
 
-        if ($matching == false) {
+        if (!$matching) {
             abort(422, 'user is already exist');
         }
 
         if ($user->mobile_verified_at == null) {
-            //send sms
+
+            return $this->preparingToVerification($request->mobile);
+
         } else {
             abort(422, 'user is already exist');
         }
 
-
-        if (isset($user) && $user->mobile_verified_at != null) {
-            return false;
-        } else {
-            $this->registerUser($request);
-        }
+        //return null;
 
     }
 
     private function registerUser($request)
     {
-        User::create(['mobile' => $request->mobile, 'national_code' => $request->nationalCode]);
+        User::createOrFail(['mobile' => $request->mobile, 'national_code' => $request->nationalCode]);
     }
 
     function findUserByMobileOrNationalCode($request)
@@ -74,13 +58,7 @@ class AuthController extends Controller
 
     function isMatchingUser($user, $request)
     {
-        $matching = false;
-
-        if ($user->national_code == $request->nationalCode && $user->mobile == $request->mobile) {
-            $matching = true;
-        }
-
-        return $matching;
+        return $user->national_code == $request->nationalCode && $user->mobile == $request->mobile;
     }
 
     function generateOtp()
@@ -98,7 +76,31 @@ class AuthController extends Controller
         ]);
     }
 
-    public function sendVerificationSms(Request $request)
+    public function preparingToSendSms($request, $otp)
+    {
+        $smsService = new FarazSms();
+
+        return $smsService->sendSmsByPattern(
+            $request->mobile, array('code' => $otp)
+        );
+    }
+
+    public function preparingToVerification($mobile)
+    {
+        $otp = $this->generateOtp();
+        $this->saveVerificationCode($mobile, $otp);
+        $result = $this->preparingToSendSms($mobile, $otp);
+
+     //   todo: After launch sentry or log change the report
+        if (!is_numeric($result)) {
+            abort(500, 'خطا: سامانه پیامکی دچار اختلال شده است لطفا بعدا تلاش کنید.');
+        }
+
+        return ["message" => "کد تایید با موفقیت ارسال شد", 'result' => true];
+    }
+
+    // for sms apis
+    public function sendVerificationCodeToUser(Request $request)
     {
         $timeOutSms = Carbon::now()->subMinutes(config('auth.verification_sms_timeout'));
 
@@ -133,5 +135,10 @@ class AuthController extends Controller
         } else {
             abort('422', 'برای ارسال مجدد درخواست لحظاتی بعد تلاش کنید');
         }
+    }
+
+    public function checkVerificationCode()
+    {
+
     }
 }
