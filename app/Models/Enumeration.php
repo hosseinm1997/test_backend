@@ -10,4 +10,5 @@ class Enumeration extends Model
     use HasFactory;
 
     protected $table = 'enumerations';
+    protected $visible = ['id', 'title', 'order'];
 }
