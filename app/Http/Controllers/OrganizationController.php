@@ -7,6 +7,7 @@ use App\Enumerations\OrganizationTypeEnums;
 use App\Repositories\OrganizationRepository;
 use App\Rules\EnumExistsRule;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrganizationController extends Controller
 {
@@ -66,10 +67,10 @@ class OrganizationController extends Controller
         $repo = new OrganizationRepository();
 
         if ($repo->userAlreadyHasOrganization(['userId' => auth()->id()])) {
-//            abort(
-//                Response::HTTP_UNPROCESSABLE_ENTITY,
-//                __('درخواست شما مبنی بر ثبت تشکل قبلا ثبت شده است!')
-//            );
+            abort(
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                __('درخواست شما مبنی بر ثبت تشکل قبلا ثبت شده است!')
+            );
         }
 
         return $repo->create($request->all())->toArray();
