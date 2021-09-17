@@ -21,7 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('auth')->group(function ($router) {
     Route::get('register', [AuthController::class, 'checkUserForRegister']);
-    Route::get('verification', [AuthController::class, 'sendVerificationSms']);
+    Route::get('mobile-verification', [AuthController::class, 'sendVerificationCodeToUser']);
+    Route::get('check-verification-code', [AuthController::class, 'checkVerificationCode']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
