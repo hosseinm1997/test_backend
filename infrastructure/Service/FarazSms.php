@@ -14,9 +14,9 @@ class FarazSms
         $this->config = config('sms_driver.farazsms');
     }
 
-    public function sendSmsByPattern($mobile, $parameters)
+    public function sendSmsByPattern($mobile, $parameters, $pattern)
     {
-        $pattern_code = $this->config['patterns']['otp'];
+        $pattern_code = $pattern;
         $to = array($mobile);
         $input_data = $parameters;
         $from = $this->config['numbers']['pattern'];

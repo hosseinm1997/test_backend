@@ -1,4 +1,5 @@
 <?php
+
 return [
     'farazsms' => [
         'username' => 'ali09122967321',
@@ -9,9 +10,6 @@ return [
         'numbers' => [
             'pattern' => "+983000505"
         ],
-        'patterns' => [
-            'otp' => "thv37ghfb6"
-        ]
         ],
     'randomNumber' =>
     [
