@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +21,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('register',[UserController::class, 'checkUserForRegister']);
+
+Route::prefix('auth')->group(function ($router) {
+    Route::get('register', [AuthController::class, 'checkUserForRegister']); //step1 is ok
+    Route::get('mobile-verification', [AuthController::class, 'sendVerificationCodeToUser']); //sms api
+    Route::get('check-verification-code', [AuthController::class, 'checkVerificationCode']); // step3 is ok
+
+    Route::post('forget-password', [ForgotPasswordController::class, 'sendResetLinkEmail']); //step1 is ok
+    Route::post('reset-password', [NewPasswordController::class, 'reset']); //step1 is ok
+});
+
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('test', function () {
-        return 'ok';
-    });
 
     Route::resource(
         'organization',

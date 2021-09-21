@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Infrastructure\Service\FarazSms;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements CanResetPassword
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -39,4 +41,19 @@ class User extends Authenticatable
     protected $casts = [
         //
     ];
+
+    public function sendPasswordResetNotification($token)
+    {
+        $address = 'http://127.0.0.1:8000?token='.$token;
+        $farazNotification = new FarazSms();
+        dd($token);
+        $farazNotification->sendSmsByPattern(request()->email, array(), config('pattern.otp'));
+        return "everything is ok";
+    }
+
+    public function getEmailForPasswordReset()
+    {
+        return $this->mobile;
+    }
+
 }
