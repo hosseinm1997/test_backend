@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MobileRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
@@ -14,10 +15,8 @@ class ForgotPasswordController extends Controller
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public function sendResetLinkEmail(Request $request)
+    public function sendResetLink(MobileRequest $request)
     {
-        $this->validate($request, ['mobile' => 'required'], ['mobile.required' => 'Please enter your mobile.']);
-
         $response = Password::sendResetLink(
             $request->only('mobile')
         );

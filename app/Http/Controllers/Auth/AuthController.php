@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\MobileRequest;
 use App\Repositories\AuthRepository;
 use Illuminate\Http\Request;
 
@@ -41,12 +42,8 @@ class AuthController extends Controller
     }
 
     // for sms apis
-    public function sendVerificationCodeToUser(Request $request)
+    public function sendVerificationCodeToUser(MobileRequest $request)
     {
-        $request->validate([
-            'mobile' => 'required|min:11|not_regex:"/^09[0-9]{9}$/"|exists:users,mobile|max:11'
-        ]);
-
         $repo = new AuthRepository();
 
         $verification = $repo->getLatestSmsOrderByUserRequest($request);
