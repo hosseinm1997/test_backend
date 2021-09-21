@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\MobileRequest;
 use App\Repositories\AuthRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -84,5 +85,27 @@ class AuthController extends Controller
 
         // todo: after lunch faraz sms create sms for successfully register.
         return ["message" => "ثبت نام شما با موفقیت تکمیل شد", 'result' => true];
+    }
+
+    public function signIn(Request $request)
+    {
+        $repo = new AuthRepository();
+
+        $user = $repo->findUserByMobile($request->mobile);
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response([
+                'message' => ['These credentials do not match our records.']
+            ], 404);
+        }
+
+        $token = $user->createToken('my-app-token')->plainTextToken;
+
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+
+        return response($response, 201);
     }
 }

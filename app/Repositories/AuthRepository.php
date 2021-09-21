@@ -5,6 +5,10 @@ namespace App\Repositories;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\VerificationCode;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Infrastructure\Service\FarazSms;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -105,17 +109,15 @@ class AuthRepository
 
     public function createUserTokens($request)
     {
-        $user = $this->getUserByMobile($request);
-
+        $user = $this->findUserByMobile($request);
         $user->createToken('auth_token')->plainTextToken;
     }
 
     public function updateUserMobileVerifiedAt($request)
     {
-        $user = $this->getUserByMobile($request);
+        $user = $this->findUserByMobile($request);
 
         $user->mobile_verified_at = Carbon::now();
-
         $user->saveOrFail();
     }
 
@@ -130,8 +132,24 @@ class AuthRepository
             ->first();
     }
 
-    private function getUserByMobile($request) {
+    public function findUserByMobile($request) {
 
         return User::where('mobile', $request->mobile)->firstOrFail();
+    }
+
+    public function doResetPassword($request)
+    {
+        return Password::reset(
+            $request->only('mobile', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
     }
 }
