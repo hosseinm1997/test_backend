@@ -54,7 +54,7 @@ class JsonResponseTransformer
 
         $mainResponse = is_array($content) ? $content : json_decode($content, true);
 
-        $response = ['error' => $mainResponse];
+        $response = ['result' => false, 'error' => $mainResponse];
         if ($statusCode == 200) {
             $message = null;
             if (is_array($mainResponse) && isset($mainResponse['message'])) {
@@ -66,6 +66,7 @@ class JsonResponseTransformer
                 $mainResponse = ['data' => $mainResponse];
 
             $response = [
+                'result' => true,
                 'message' => $message,
                 'outcome' => $mainResponse ?: null
             ];

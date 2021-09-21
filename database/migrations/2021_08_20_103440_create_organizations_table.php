@@ -36,7 +36,7 @@ class CreateOrganizationsTable extends Migration
             $table->integer('manager_user_id')->nullable();
             $table->integer('secretary_user_id')->nullable();
 
-            $table->dateTime('established_at');
+            $table->dateTime('established_at')->nullable();
             $table->timestamps();
         });
     }

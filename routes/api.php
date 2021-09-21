@@ -21,18 +21,24 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::prefix('auth')->group(function ($router) {
     Route::get('register', [AuthController::class, 'checkUserForRegister']); //step1 is ok
     Route::get('mobile-verification', [AuthController::class, 'sendVerificationCodeToUser']); //sms api
     Route::get('check-verification-code', [AuthController::class, 'checkVerificationCode']); // step3 is ok
 
-    Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']); //step1 is ok
+    Route::post('forget-password', [ForgotPasswordController::class, 'sendResetLinkEmail']); //step1 is ok
     Route::post('reset-password', [NewPasswordController::class, 'reset']); //step1 is ok
 });
 
-//Route::middleware('auth:sanctum')->group(function () {
-//    Route::post('test', function () {
-//        return 'ok';
-//    });
-//});
+Route::middleware('auth:sanctum')->group(function () {
 
+    Route::resource(
+        'organization',
+        \App\Http\Controllers\OrganizationController::class
+    )->only([
+        'store',
+        'edit',
+        'update',
+    ]);
+});
