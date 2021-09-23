@@ -45,12 +45,10 @@ class User extends Authenticatable implements CanResetPassword
     public function sendPasswordResetNotification($token)
     {
         $address = 'http://127.0.0.1:8000?token=' . $token;
-        $farazNotification = new FarazSms();
 
-        $farazNotification->sendSmsByPattern(
-            request()->mobile,
-            array('link' => $address),
-            config('pattern.reset_password')
+        sendSmsByPattern(request()->mobile,
+            config('pattern.reset_password'),
+            array('link' => $address)
         );
     }
 

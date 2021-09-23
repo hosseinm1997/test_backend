@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\MobileRequest;
 use App\Repositories\AuthRepository;
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -31,14 +32,14 @@ class AuthController extends Controller
         $matching = $repo->isInformationMatchOurUser($user, $request);
 
         if (!$matching) {
-            abort(422, 'قبلا در سیستم ثبت نام کرده اید.');
+            abort(422, 'کدملی یا شماره موبایل قبلا در سیستم ثبت شده است.');
         }
 
         if ($user->mobile_verified_at == null) {
             return $repo->preparingToVerification($request);
 
         } else {
-            abort(422, 'قبلا در سیستم ثبت نام کرده اید.');
+            abort(422, 'کدملی یا شماره موبایل قبلا در سیستم ثبت شده است.');
         }
     }
 
@@ -83,7 +84,13 @@ class AuthController extends Controller
         $repo->updateUserMobileVerifiedAt($request);
         $repo->createUserTokens($request);
 
-        // todo: after lunch faraz sms create sms for successfully register.
+        $solarTime = new Verta();
+
+        sendSmsByPattern($request->mobile,
+            config('pattern.successful_registration'),
+            array('time' => $solarTime->format('Y/m/d H:i:s'))
+        );
+
         return ["message" => "ثبت نام شما با موفقیت تکمیل شد", 'result' => true];
     }
 
@@ -95,7 +102,7 @@ class AuthController extends Controller
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
-                'message' => ['These credentials do not match our records.']
+                'message' => ['خطای توکن.']
             ], 404);
         }
 

@@ -9,7 +9,6 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
-use Infrastructure\Service\FarazSms;
 use Laravel\Sanctum\HasApiTokens;
 
 class AuthRepository
@@ -65,14 +64,9 @@ class AuthRepository
         ]);
     }
 
-    private function preparingToSendSms($mobile, $otp)
+    private function sendOtpSms($mobile, $otp)
     {
-        $smsService = new FarazSms();
-
-        return $smsService->sendSmsByPattern(
-            $mobile, array('code' => $otp),
-            config('pattern.otp')
-        );
+       return sendSmsByPattern($mobile, config('pattern.otp'), array('code' => $otp));
     }
 
     public function preparingToVerification($request)
@@ -81,7 +75,7 @@ class AuthRepository
 
         $otp = $this->generateOtp();
         $this->saveVerificationCode($mobile, $otp);
-        $result = $this->preparingToSendSms($mobile, $otp);
+        $result = $this->sendOtpSms($mobile, $otp);
 
         //   todo: After launch sentry or log change the report
         if (!is_numeric($result)) {
