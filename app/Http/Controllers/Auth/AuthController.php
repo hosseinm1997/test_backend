@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\MobileRequest;
 use App\Repositories\AuthRepository;
+use App\Rules\NationalCodeRule;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -69,7 +71,7 @@ class AuthController extends Controller
     public function checkVerificationCode(Request $request)
     {
         $request->validate([
-            'code' => 'required|max:5|min:5',
+            'code' => 'required|digits:5',
             'mobile' => 'required|min:11|not_regex:"/^09[0-9]{9}$/"|exists:users,mobile|max:11'
         ]);
 
@@ -78,7 +80,7 @@ class AuthController extends Controller
         $verification = $repo->updateUsedAtVerificationCode($request);
 
         if ($verification == false) {
-            abort('422', 'کد نامعتبر');
+            abort('422', 'کد منقضی یا نامعتبر');
         }
 
         $repo->updateUserMobileVerifiedAt($request);
@@ -96,13 +98,25 @@ class AuthController extends Controller
 
     public function signIn(Request $request)
     {
+        $request->validate([
+            'nationalCode' => ['required','digits:10', new NationalCodeRule],
+            'password' => [
+                'required',
+                Password::min(8)
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->uncompromised(),
+            ]
+        ]);
+
         $repo = new AuthRepository();
 
-        $user = $repo->findUserByMobile($request);
+        $user = $repo->findUserByNationalCode($request);
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
-                'message' => ['خطای توکن.']
+                'message' => ['کدملی یا کلمه عبور نامعتبر']
             ], 404);
         }
 

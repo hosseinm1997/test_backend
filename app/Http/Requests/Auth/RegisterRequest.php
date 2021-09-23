@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\NationalCodeRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -24,8 +25,8 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'mobile' => 'required|min:11|max:11|not_regex:"/^09[0-9]{9}$/"',
-            'nationalCode' => 'required|min:10'
+            'mobile' => 'required|digits:11|not_regex:"/^09[0-9]{9}$/"',
+            'nationalCode' => ['required','digits:10',new NationalCodeRule]
         ];
     }
 }

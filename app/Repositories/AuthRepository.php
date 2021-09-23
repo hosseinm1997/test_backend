@@ -131,6 +131,11 @@ class AuthRepository
         return User::where('mobile', $request->mobile)->firstOrFail();
     }
 
+    public function findUserByNationalCode($request) {
+
+        return User::firstWhere('national_code', $request->nationalCode);
+    }
+
     public function doResetPassword($request)
     {
         return Password::reset(
