@@ -25,9 +25,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::prefix('auth')->group(function ($router) {
-    Route::get('register', [AuthController::class, 'checkUserForRegister']); //step1 is ok
-    Route::get('mobile-verification', [AuthController::class, 'sendVerificationCodeToUser']); //sms api
-    Route::get('check-verification-code', [AuthController::class, 'checkVerificationCode']); // step3 is ok
+    Route::post('register', [AuthController::class, 'checkUserForRegister']); //step1 is ok
+    Route::post('mobile-verification', [AuthController::class, 'sendVerificationCodeToUser']); //sms api
+    Route::post('check-verification-code', [AuthController::class, 'checkVerificationCode']); // step3 is ok
 
     Route::post('forget-password', [ForgotPasswordController::class, 'sendResetLink']); //step1 is ok
     Route::post('reset-password', [NewPasswordController::class, 'reset']); //step1 is ok
