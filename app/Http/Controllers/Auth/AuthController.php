@@ -91,7 +91,7 @@ class AuthController extends Controller
     {
         $repo = new AuthRepository();
 
-        $user = $repo->findUserByMobile($request->mobile);
+        $user = $repo->findUserByMobile($request);
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([

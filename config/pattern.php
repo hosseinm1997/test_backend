@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'otp' => "thv37ghfb6"
+    'otp' => "39glwevm59",
+    'reset_password' => "xlbanm9fsl"
 ];
