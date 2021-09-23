@@ -31,7 +31,7 @@ Route::prefix('auth')->group(function ($router) {
 
     Route::post('forget-password', [ForgotPasswordController::class, 'sendResetLink']); //step1 is ok
     Route::post('reset-password', [NewPasswordController::class, 'reset']); //step1 is ok
-    Route::post('login', [NewPasswordController::class, 'signIn']); //step1 is ok
+    Route::post('login', [AuthController::class, 'signIn']); //step1 is ok
 });
 
 Route::middleware('auth:sanctum')->group(function () {

@@ -2,8 +2,8 @@
 
 return [
     'farazsms' => [
-        'username' => 'ali09122967321',
-        'password' => 'bakhtiyariali12',
+        'username' => 'reseller09027818262',
+        'password' => 'fartakvira2021@',
         'address' => [
             'pattern' =>"https://ippanel.com/patterns/pattern?username="
         ],
