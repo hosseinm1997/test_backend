@@ -15,6 +15,31 @@ class ForgotPasswordController extends Controller
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * @OA\Post(
+     *   path="/api/auth/forget-password",
+     *   tags={"Authentication"},
+     *   summary="forgert Password",
+     *   description="forgetPassword by mobile",
+     *  @OA\Parameter(
+     *      name="mobile",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *  @OA\Response(
+     *     response=200,
+     *     description="Ok",
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Data Validation Error",
+     *  )
+     *)
+     */
+
     public function sendResetLink(MobileRequest $request)
     {
         $response = Password::sendResetLink(

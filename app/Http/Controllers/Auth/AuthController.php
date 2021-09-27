@@ -14,6 +14,64 @@ use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
+    /**
+     * @OA\Info(
+     *      version="1.0.0",
+     *      title="Sajamaax",
+     *      description="api Sajaamax",
+     *
+     * )
+     */
+    /**
+     * @OA\Server(
+     *      url=L5_SWAGGER_CONST_HOST,
+     *      description="Sajamaax address"
+     * )
+     *
+     *
+    /**
+     *  @OA\SecurityScheme(
+     *      securityScheme="bearerAuth",
+     *      in="header",
+     *      name="bearerAuth",
+     *      type="http",
+     *      scheme="bearer",
+     * ),
+     */
+
+    /**
+     * @OA\Post(
+     *   path="/api/auth/register",
+     *   tags={"Authentication"},
+     *   summary="sumbit user",
+     *   description="register by nationalCode and mobile",
+     *  @OA\Parameter(
+     *      name="nationalCode",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="mobile",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *  @OA\Response(
+     *     response=200,
+     *     description="Ok",
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Data Validation Error",
+     *  )
+     *)
+     */
+
     public function checkUserForRegister(RegisterRequest $request)
     {
         $repo = new AuthRepository();
@@ -45,6 +103,31 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *   path="/api/auth/mobile-verification",
+     *   tags={"Authentication"},
+     *   summary="sms api verify",
+     *   description="verification sms by mobile",
+     *  @OA\Parameter(
+     *      name="mobile",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *  @OA\Response(
+     *     response=200,
+     *     description="Ok",
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Data Validation Error",
+     *  )
+     *)
+     */
+
     // for sms apis
     public function sendVerificationCodeToUser(MobileRequest $request)
     {
@@ -66,6 +149,39 @@ class AuthController extends Controller
             abort('422', 'برای ارسال مجدد درخواست لحظاتی بعد تلاش کنید');
         }
     }
+
+    /**
+     * @OA\Post(
+     *   path="/api/auth/check-verification-code",
+     *   tags={"Authentication"},
+     *   summary="verification code",
+     *   description="verification otp",
+     *  @OA\Parameter(
+     *      name="mobile",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="code",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *  @OA\Response(
+     *     response=200,
+     *     description="Ok",
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Data Validation Error",
+     *  )
+     *)
+     */
 
     // api step 3
     public function checkVerificationCode(Request $request)
@@ -96,10 +212,42 @@ class AuthController extends Controller
         return ["message" => "ثبت نام شما با موفقیت تکمیل شد", 'result' => true];
     }
 
+    /**
+     * @OA\Post(
+     *   path="/api/auth/login",
+     *   tags={"Authentication"},
+     *   summary="get token",
+     *   description="login by nationalCode and password",
+     *  @OA\Parameter(
+     *      name="nationlCode",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="password",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *  @OA\Response(
+     *     response=200,
+     *     description="Ok",
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Data Validation Error",
+     *  )
+     *)
+     */
     public function signIn(Request $request)
     {
         $request->validate([
-            'nationalCode' => ['required','digits:10', new NationalCodeRule],
+            'nationalCode' => ['required', 'digits:10', new NationalCodeRule],
             'password' => [
                 'required',
                 Password::min(8)
