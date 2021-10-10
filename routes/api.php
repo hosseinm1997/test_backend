@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\ProfileController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ use Illuminate\Http\Request;
 */
 
 Route::get('test', function () {
-    return response()->json(['hello' => 'world']);
+    dd(App::getLocale());
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

@@ -153,6 +153,7 @@ return [
         'month'                 => 'ماه',
         'name'                  => 'نام',
         'national_code'         => 'کد ملی',
+        'nationalCode'         => 'کد ملی',
         'password'              => 'رمز عبور',
         'password_confirmation' => 'تکرار رمز عبور',
         'phone'                 => 'شماره ثابت',
@@ -166,5 +167,6 @@ return [
         'title'                 => 'عنوان',
         'username'              => 'نام کاربری',
         'year'                  => 'سال',
+        'code'                  => 'کد تایید'
     ],
 ];
