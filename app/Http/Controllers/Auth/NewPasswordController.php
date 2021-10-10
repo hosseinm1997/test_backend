@@ -11,7 +11,7 @@ class NewPasswordController extends Controller
 {
 
     /**
-     * @OA\Post(
+     * @OA\Get(
      *   path="/api/auth/reset-password",
      *   tags={"Authentication"},
      *   summary="reset Password",

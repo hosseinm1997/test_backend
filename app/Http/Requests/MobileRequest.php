@@ -24,7 +24,7 @@ class MobileRequest extends FormRequest
     public function rules()
     {
         return [
-            'mobile' => 'required|min:11|max:11|not_regex:"/^09[0-9]{9}$/"',
+            'mobile' => 'required|digits:11|not_regex:"/^09[0-9]{9}$/"|exists:users,mobile',
         ];
     }
 }

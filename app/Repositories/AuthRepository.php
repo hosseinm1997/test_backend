@@ -66,7 +66,7 @@ class AuthRepository
 
     private function sendOtpSms($mobile, $otp)
     {
-       return sendSmsByPattern($mobile, config('pattern.otp'), array('code' => $otp));
+        return sendSmsByPattern($mobile, config('pattern.otp'), array('code' => $otp));
     }
 
     public function preparingToVerification($request)
@@ -101,16 +101,13 @@ class AuthRepository
         return $verified;
     }
 
-    public function createUserTokens($request)
+    public function createUserTokens(User $user)
     {
-        $user = $this->findUserByMobile($request);
-        $user->createToken('auth_token')->plainTextToken;
+        return $user->createToken('auth_token')->plainTextToken;
     }
 
-    public function updateUserMobileVerifiedAt($request)
+    public function updateUserMobileVerifiedAt(User $user)
     {
-        $user = $this->findUserByMobile($request);
-
         $user->mobile_verified_at = Carbon::now();
         $user->saveOrFail();
     }
@@ -126,12 +123,13 @@ class AuthRepository
             ->first();
     }
 
-    public function findUserByMobile($request) {
-
+    public function findUserByMobile($request)
+    {
         return User::where('mobile', $request->mobile)->firstOrFail();
     }
 
-    public function findUserByNationalCode($request) {
+    public function findUserByNationalCode($request)
+    {
 
         return User::firstWhere('national_code', $request->nationalCode);
     }

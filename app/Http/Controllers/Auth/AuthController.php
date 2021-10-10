@@ -117,6 +117,14 @@ class AuthController extends Controller
      *           type="string"
      *      )
      *   ),
+     *  @OA\Parameter(
+     *      name="debug",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="boolean"
+     *      )
+     *   ),
      *  @OA\Response(
      *     response=200,
      *     description="Ok",
@@ -199,8 +207,9 @@ class AuthController extends Controller
             abort('422', 'کد منقضی یا نامعتبر');
         }
 
-        $repo->updateUserMobileVerifiedAt($request);
-        $repo->createUserTokens($request);
+        $user = $repo->findUserByMobile($request);
+        $repo->updateUserMobileVerifiedAt($user);
+        $token = $repo->createUserTokens($user);
 
         $solarTime = new Verta();
 
@@ -209,7 +218,12 @@ class AuthController extends Controller
             array('time' => $solarTime->format('Y/m/d H:i:s'))
         );
 
-        return ["message" => "ثبت نام شما با موفقیت تکمیل شد", 'result' => true];
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+
+        return response($response, 201);
     }
 
     /**
