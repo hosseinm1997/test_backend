@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'mobile' => 'required|digits:11|not_regex:"/^09[0-9]{9}$/"',
+            'mobile' => ['required','digits:11', "regex:/^(09\\d{9}|16476422280)$/"],
             'nationalCode' => ['required','digits:10',new NationalCodeRule]
         ];
     }

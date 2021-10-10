@@ -196,7 +196,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'code' => 'required|digits:5',
-            'mobile' => 'required|min:11|not_regex:"/^09[0-9]{9}$/"|exists:users,mobile|max:11'
+            'mobile' => ['required','digits:11', "regex:/^(09\\d{9}|16476422280)$/"]
         ]);
 
         $repo = new AuthRepository();
