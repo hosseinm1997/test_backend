@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class MakeJson
+class HasOrganization
 {
     /**
      * Handle an incoming request.
@@ -16,8 +16,12 @@ class MakeJson
      */
     public function handle(Request $request, Closure $next)
     {
-        $response = $next($request);
+        $user = auth_user()->loadMissing('organizationRelation');
 
-        return response()->json($response);
+        if (is_null($user->organizationRelation)) {
+            throw new \Exception('برای عملیات فعلی، هنوز هیچ تشکلی ایحاد نکرده اید!');
+        }
+
+        return $next($request);
     }
 }
