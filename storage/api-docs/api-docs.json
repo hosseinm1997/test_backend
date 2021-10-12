@@ -1,0 +1,237 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Sajamaax",
+        "description": "api Sajaamax",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://51.77.94.252:8080",
+            "description": "Sajamaax address"
+        }
+    ],
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "sumbit user",
+                "description": "register by nationalCode and mobile",
+                "operationId": "f8dea52cbfb15ba2526e70e63fbbdd9d",
+                "parameters": [
+                    {
+                        "name": "nationalCode",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "422": {
+                        "description": "Data Validation Error"
+                    }
+                }
+            }
+        },
+        "/api/auth/mobile-verification": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "sms api verify",
+                "description": "verification sms by mobile",
+                "operationId": "c2d15f46d631d8b1bd06d15b1c2b0bd3",
+                "parameters": [
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "422": {
+                        "description": "Data Validation Error"
+                    }
+                }
+            }
+        },
+        "/api/auth/check-verification-code": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "verification code",
+                "description": "verification otp",
+                "operationId": "17a1fd4b6074bbdf769c1e5077f210bd",
+                "parameters": [
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "422": {
+                        "description": "Data Validation Error"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "get token",
+                "description": "login by nationalCode and password",
+                "operationId": "ae1efd342522f3f422e4ffd82767531c",
+                "parameters": [
+                    {
+                        "name": "nationlCode",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "422": {
+                        "description": "Data Validation Error"
+                    }
+                }
+            }
+        },
+        "/api/auth/forget-password": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "forgert Password",
+                "description": "forgetPassword by mobile",
+                "operationId": "b0387e68c838e76a5974849c383e8d80",
+                "parameters": [
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "422": {
+                        "description": "Data Validation Error"
+                    }
+                }
+            }
+        },
+        "/api/auth/reset-password": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "reset Password",
+                "description": "reset password by mobile and token and password",
+                "operationId": "822b714e4e5066ad9eb46f3b97d145a1",
+                "parameters": [
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "422": {
+                        "description": "Data Validation Error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

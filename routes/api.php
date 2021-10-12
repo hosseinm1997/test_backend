@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\User\ProfileController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ use App\Http\Controllers;
 */
 
 Route::get('test', function () {
-    
+
     return response()->json(['hello' => 'world']);
 });
 
