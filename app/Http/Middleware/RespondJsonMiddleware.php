@@ -31,7 +31,10 @@ class RespondJsonMiddleware
             $response = $request;
 
 
-        if (!in_array($request->route()->getName(), $this->exceptRouteNames)  && !($request->debug && config('app.debug'))) {
+        if (
+            !in_array($request->route()->getName(), $this->exceptRouteNames)
+            && !(config('app.debug') && ($request->debug || $request->header('debug') == true) )
+        ) {
             $response = (new JsonResponseTransformer())->transform($response->getContent(), $response->exception);
         }
 

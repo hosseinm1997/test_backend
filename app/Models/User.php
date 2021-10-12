@@ -9,6 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Infrastructure\Service\FarazSms;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * Class User
+ * @property Organization organizationRelation
+ * @package App\Models
+ */
 class User extends Authenticatable implements CanResetPassword
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -55,6 +60,11 @@ class User extends Authenticatable implements CanResetPassword
     public function getEmailForPasswordReset()
     {
         return $this->mobile;
+    }
+
+    public function organizationRelation()
+    {
+        return $this->hasOne(Organization::class, 'owner_user_id', 'id');
     }
 
 }

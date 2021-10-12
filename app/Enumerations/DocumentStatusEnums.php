@@ -1,46 +1,42 @@
 <?php
 
-
 namespace App\Enumerations;
 
-
-final class OrganizationStatusEnums extends EnumerationAbstract
+class DocumentStatusEnums extends EnumerationAbstract
 {
+    const PARENT_ID = 18;
 
-    const PARENT_ID = 8;
+    const WAITING_FOR_VERIFICATION = 19;
+    const NO_NEED_TO_VERIFY = 20;
 
-    const WAITING_FOR_COMPLETION = 9;
-    const WAITING_FOR_VERIFICATION = 10;
+    const VERIFYING_BY_AGENT = 21;
+    const ACCEPTED_BY_AGENT = 22;
+    const REJECTED_BY_AGENT = 23;
 
-    const VERIFYING_BY_AGENT = 11;
-    const ACCEPTED_BY_AGENT = 12;
-    const REJECTED_BY_AGENT = 13;
-
-    const VERIFYING_BY_MANAGER = 44;
-    const ACCEPTED_BY_MANAGER = 45;
-    const REJECTED_BY_MANAGER = 46;
-
+    const VERIFYING_BY_MANAGER = 24;
+    const ACCEPTED_BY_MANAGER = 25;
+    const REJECTED_BY_MANAGER = 26;
 
     public static function provideDataToSeed(): array
     {
         return [
             [
                 'id' => self::PARENT_ID,
-                'title' => 'انواع وضعیت های انجمن',
+                'title' => 'انواع وضعیت های سند',
                 'parent_id' => 0,
-                'meta_data' => null,
-            ],
-
-            [
-                'id' => self::WAITING_FOR_COMPLETION,
-                'title' => 'در انتظار تکمیل مدارک',
-                'parent_id' => self::PARENT_ID,
                 'meta_data' => null,
             ],
 
             [
                 'id' => self::WAITING_FOR_VERIFICATION,
                 'title' => 'در انتظار بررسی',
+                'parent_id' => self::PARENT_ID,
+                'meta_data' => null,
+            ],
+
+            [
+                'id' => self::NO_NEED_TO_VERIFY,
+                'title' => 'عدم نیاز به بررسی',
                 'parent_id' => self::PARENT_ID,
                 'meta_data' => null,
             ],

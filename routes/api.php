@@ -3,11 +3,14 @@
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +24,8 @@ use Illuminate\Http\Request;
 */
 
 Route::get('test', function () {
-    dd(App::getLocale());
+
+    return response()->json(['hello' => 'world']);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -45,14 +49,24 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('user')->group(function ($router) {
         Route::put('update-password', [ProfileController::class, 'updatePassword']);
+        Route::post('document', [DocumentController::class, 'storeForUser']);
     });
 
-    Route::resource(
-        'organization',
-        \App\Http\Controllers\OrganizationController::class
-    )->only([
-        'store',
-        'edit',
-        'update',
-    ]);
+    Route::get('document/{id}', [DocumentController::class, 'show'])->name('document.show');
+
+    Route::prefix('organization')->group(function () {
+        Route::post('/', [OrganizationController::class, 'store']);
+
+        Route::middleware('has.organization')->group(function () {
+            Route::resource(
+                'organization',
+                OrganizationController::class
+            )->only([
+                'edit',
+                'update',
+            ]);
+
+            Route::post('document', [DocumentController::class, 'storeForOrganization']);
+        });
+    });
 });

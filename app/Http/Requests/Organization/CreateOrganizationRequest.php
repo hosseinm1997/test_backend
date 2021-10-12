@@ -50,12 +50,12 @@ class CreateOrganizationRequest extends FormRequest
             'directors.*' => 'string',
             'type' => [
                 'required',
-                'string',
+                'int',
                 new EnumExistsRule(OrganizationTypeEnums::PARENT_ID)
             ],
             'category' => [
                 'required',
-                'string',
+                'int',
                 new EnumExistsRule(OrganizationCategoryEnums::PARENT_ID)
             ],
         ];

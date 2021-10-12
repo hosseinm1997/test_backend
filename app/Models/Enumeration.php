@@ -11,4 +11,7 @@ class Enumeration extends Model
 
     protected $table = 'enumerations';
     protected $visible = ['id', 'title', 'order'];
+    protected $casts = [
+        'meta_data' => 'array'
+    ];
 }
