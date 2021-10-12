@@ -196,7 +196,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'code' => 'required|digits:5',
-            'mobile' => ['required','digits:11', "regex:/^(09\\d{9}|16476422280)$/"]
+            'mobile' => 'required|min:11|not_regex:"/^09[0-9]{9}$/"|exists:users,mobile|max:11'
         ]);
 
         $repo = new AuthRepository();
@@ -233,7 +233,7 @@ class AuthController extends Controller
      *   summary="get token",
      *   description="login by nationalCode and password",
      *  @OA\Parameter(
-     *      name="nationlCode",
+     *      name="nationalCode",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
@@ -273,9 +273,7 @@ class AuthController extends Controller
         $user = $repo->findUserByNationalCode($request);
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response([
-                'message' => ['کدملی یا کلمه عبور نامعتبر']
-            ], 404);
+            abort('406', 'کدملی یا کلمه عبور نامعتبر');
         }
 
         $token = $user->createToken('my-app-token')->plainTextToken;
