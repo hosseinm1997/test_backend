@@ -18,18 +18,21 @@ final class OrganizationTypeEnums extends EnumerationAbstract
                 'id' => self::PARENT_ID,
                 'title' => 'انواع تشکل',
                 'parent_id' => 0,
+                'meta_data' => null,
             ],
 
             [
                 'id' => self::COMMUNITY,
                 'title' => 'انجمن',
                 'parent_id' => self::PARENT_ID,
+                'meta_data' => null,
             ],
 
             [
                 'id' => self::CLUB,
                 'title' => 'کانون',
                 'parent_id' => self::PARENT_ID,
+                'meta_data' => null,
             ]
         ];
     }

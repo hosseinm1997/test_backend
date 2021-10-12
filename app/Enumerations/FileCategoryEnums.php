@@ -2,41 +2,41 @@
 
 namespace App\Enumerations;
 
-final class OrganizationCategoryEnums extends EnumerationAbstract
+class FileCategoryEnums extends EnumerationAbstract
 {
-    const PARENT_ID = 4;
+    const PARENT_ID = 14;
 
-    const SCIENTIFIC = 5;
-    const ENGINEERING = 6;
-    const MANUFACTURE = 7;
+    const DOCUMENT = 15;
+    const THREAD_ATTACHMENT = 16;
+    const NEWS_MEDIA = 17;
 
     public static function provideDataToSeed(): array
     {
         return [
             [
                 'id' => self::PARENT_ID,
-                'title' => 'دسته بندی تشکل ها',
+                'title' => 'انواع دسته بندی فایل ها',
                 'parent_id' => 0,
                 'meta_data' => null,
             ],
 
             [
-                'id' => self::SCIENTIFIC,
-                'title' => 'علمی',
+                'id' => self::DOCUMENT,
+                'title' => 'سند',
                 'parent_id' => self::PARENT_ID,
                 'meta_data' => null,
             ],
 
             [
-                'id' => self::ENGINEERING,
-                'title' => 'صنفی و مهندسی',
+                'id' => self::THREAD_ATTACHMENT,
+                'title' => 'پیوست نامه',
                 'parent_id' => self::PARENT_ID,
                 'meta_data' => null,
             ],
 
             [
-                'id' => self::MANUFACTURE,
-                'title' => 'تولید',
+                'id' => self::NEWS_MEDIA,
+                'title' => 'عکس و ویدیو خبر',
                 'parent_id' => self::PARENT_ID,
                 'meta_data' => null,
             ]
