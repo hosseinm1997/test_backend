@@ -31,4 +31,11 @@ class ProfileController extends Controller
 
         return ["message" => "کلمه عبور باموفقیت ثبت شد", 'result' => true];
     }
+
+    public function getAuthUser()
+    {
+        return [
+            'user' => auth_user()->toArray()
+        ];
+    }
 }

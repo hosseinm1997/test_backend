@@ -48,6 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('user')->group(function ($router) {
+        Route::get('/', [ProfileController::class, 'getAuthUser']);
         Route::put('update-password', [ProfileController::class, 'updatePassword']);
         Route::post('document', [DocumentController::class, 'storeForUser']);
     });
