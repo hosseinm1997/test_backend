@@ -64,6 +64,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "debug",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
                     }
                 ],
                 "responses": {
@@ -122,7 +130,7 @@
                 "operationId": "ae1efd342522f3f422e4ffd82767531c",
                 "parameters": [
                     {
-                        "name": "nationlCode",
+                        "name": "nationalCode",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -177,13 +185,13 @@
             }
         },
         "/api/auth/reset-password": {
-            "post": {
+            "get": {
                 "tags": [
                     "Authentication"
                 ],
                 "summary": "reset Password",
                 "description": "reset password by mobile and token and password",
-                "operationId": "822b714e4e5066ad9eb46f3b97d145a1",
+                "operationId": "a2e406c797597f0a74f6d12338e3657e",
                 "parameters": [
                     {
                         "name": "mobile",
@@ -218,6 +226,39 @@
                         "description": "Data Validation Error"
                     }
                 }
+            }
+        },
+        "/api/user/update-password": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update pass",
+                "description": "update pass user",
+                "operationId": "updateFeedbackItem",
+                "parameters": [
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "422": {
+                        "description": "Data Validation Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
