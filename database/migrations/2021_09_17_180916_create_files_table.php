@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEnumerationsTable extends Migration
+class CreateFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateEnumerationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('enumerations', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 200);
-            $table->integer('parent_id')->default(0);
-            $table->integer('order')->nullable();
-            $table->jsonb('meta_data')->nullable();
+            $table->string('address', 1000);
+            $table->string('content_type', 100);
+            $table->integer('category');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -30,6 +30,6 @@ class CreateEnumerationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('enumerations');
+        Schema::dropIfExists('files');
     }
 }
