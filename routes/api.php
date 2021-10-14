@@ -25,7 +25,7 @@ use App\Http\Controllers;
 */
 
 Route::get('test', function () {
-
+User::where('mobile', '09196145343')->get();
     return response()->json(['hello' => 'world']);
 });
 
@@ -43,20 +43,23 @@ Route::prefix('auth')->group(function ($router) {
     Route::post('check-verification-code', [AuthController::class, 'checkVerificationCode']); // step3 is ok
 
     Route::post('forget-password', [ForgotPasswordController::class, 'sendResetLink']); //step1 is ok
-    Route::post('reset-password', [NewPasswordController::class, 'reset']); //step1 is ok
-    Route::post('login', [AuthController::class, 'signIn']); //step1 is ok
+    Route::get('reset-password', [NewPasswordController::class, 'reset']); //step1 is ok
+    Route::post('login', [AuthController::class, 'signIn']);  //step1 is ok
+});
+
+Route::get('logout', function () {
+    //dd(123);
+    Auth::logout();
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('logout', function () {
-        Auth::logout();
-    });
     Route::post('login', [ 'as' => 'login', 'uses' => 'LoginController@do']);
 
     Route::prefix('user')->group(function ($router) {
         Route::get('/', [ProfileController::class, 'getAuthUser']);
         Route::put('update-password', [ProfileController::class, 'updatePassword']);
         Route::post('document', [DocumentController::class, 'storeForUser']);
+
     });
 
     Route::get('document/{id}', [DocumentController::class, 'show'])->name('document.show');
