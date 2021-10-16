@@ -49,7 +49,7 @@ Route::prefix('auth')->group(function ($router) {
 
 Route::get('logout', function () {
     Auth::logout();
-    return ["message" => "عملیات خروج با موفقیت انجام شد",'logout' => 'true', 'result' => true];
+    return ["message" => "عملیات خروج با موفقیت انجام شد",'logout' => true, 'result' => true];
 });
 
 Route::middleware('auth:sanctum')->group(function () {
