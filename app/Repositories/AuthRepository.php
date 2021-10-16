@@ -130,7 +130,6 @@ class AuthRepository
 
     public function findUserByNationalCode($request)
     {
-
         return User::firstWhere('national_code', $request->nationalCode);
     }
 
