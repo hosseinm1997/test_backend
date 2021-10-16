@@ -31,9 +31,9 @@ class RespondJsonMiddleware
         else
             $response = $request;
 
-        if ($response instanceof BinaryFileResponse) {
-            return $response;
-        }
+//        if ($response instanceof BinaryFileResponse) {
+//            return $response;
+//        }
 
         if (
             !in_array($request->route()->getName(), $this->exceptRouteNames)
