@@ -31,13 +31,13 @@ class RespondJsonMiddleware
         else
             $response = $request;
 
-//        if ($response instanceof BinaryFileResponse) {
-//            return $response;
-//        }
+        if ($response instanceof BinaryFileResponse) {
+            return $response;
+        }
 
         if (
             !in_array($request->route()->getName(), $this->exceptRouteNames)
-            && (config('app.debug') && ($request->debug || $request->header('debug') == true) )
+            && !(config('app.debug') && ($request->debug || $request->header('debug') == true))
         ) {
             $response = (new JsonResponseTransformer())->transform($response->getContent(), $response->exception);
         }
