@@ -29,3 +29,12 @@ jobs:
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
           script: 'cd /home/ftpuser/ftp/sajaamax && ./server_deploy.sh'
+
+      - name: Executing remote command on iranvue server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.IRANVUE_HOST }}
+          USERNAME: ${{ secrets.IRANVUE_USERNAME }}
+          PORT: ${{ secrets.IRANVUE_PORT }}
+          KEY: ${{ secrets.IRANVUE_SSHKEY }}
+          script: 'cd /var/www/sajamax-backend && ./server_deploy.sh'

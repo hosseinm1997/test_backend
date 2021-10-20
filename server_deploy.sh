@@ -22,6 +22,11 @@ php artisan down
 # Exit maintenance mode
 php artisan up
 
-chown -R www-data:www-data storage/ bootstrap/cache/
+if [[ `ps -acx|grep httpd|wc -l` > 0 ]]; then
+    chown -R apache:apache storage/ bootstrap/cache/
+fi
+if [[ `ps -acx|grep nginx|wc -l` > 0 ]]; then
+    chown -R www-data:www-data storage/ bootstrap/cache/
+fi
 
 echo "🚀 Application deployed!"
