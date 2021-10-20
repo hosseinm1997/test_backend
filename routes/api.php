@@ -5,13 +5,12 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\User\ProfileController;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use App\Http\Controllers;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,4 +78,10 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('document', [DocumentController::class, 'storeForOrganization']);
         });
     });
+});
+
+Route::middleware('auth:sanctum')->prefix('tickets')->group(function ($router) {
+    $router->get('/', [TicketController::class, 'index']);
+    $router->post('/', [TicketController::class, 'store']);
+    $router->get('/{ticketId}', [TicketController::class, 'show']);
 });
