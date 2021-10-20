@@ -48,8 +48,8 @@ Route::prefix('auth')->group(function ($router) {
 });
 
 Route::get('logout', function () {
-    //dd(123);
     Auth::logout();
+    return ["message" => "عملیات خروج با موفقیت انجام شد",'logout' => true, 'result' => true];
 });
 
 Route::middleware('auth:sanctum')->group(function () {

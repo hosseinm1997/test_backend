@@ -258,6 +258,7 @@ class AuthController extends Controller
      *  )
      *)
      */
+    //
     public function signIn(Request $request)
     {
         $request->validate([
