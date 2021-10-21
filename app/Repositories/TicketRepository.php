@@ -10,7 +10,7 @@ class TicketRepository implements TicketRepositoryInterface
 {
     public function index()
     {
-        return Ticket::query()->with('createdBy')->latest()->paginate();
+        return Ticket::query()->with('organization' ,'createdBy')->latest()->paginate();
     }
 
     public function show($ticketId)
@@ -20,11 +20,12 @@ class TicketRepository implements TicketRepositoryInterface
 
     public function store(array $data)
     {
-        $ticket =  Ticket::query()->create([
-           'title'      => $data['title'],
-           'mobile'     => $data['mobile'],
-           'email'      => $data['email'],
-           'created_by' => auth()->id(),
+        $ticket = Ticket::query()->create([
+           'title'              => $data['title'],
+           'mobile'             => $data['mobile'],
+           'email'              => $data['email'],
+           'organization_id'    => $data['organization_id'],
+           'created_by'         => auth()->id(),
         ]);
 
         $this->createThreadForTicket($data ,$ticket->id);

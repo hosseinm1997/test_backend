@@ -19,6 +19,8 @@ class Ticket extends Model
         'mobile',
         'email',
         'created_by',
+        'organization_id',
+        'priority'
     ];
 
     public function threads(): HasMany
@@ -29,5 +31,10 @@ class Ticket extends Model
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function organization(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class, 'organization_id');
     }
 }

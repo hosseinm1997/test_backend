@@ -34,6 +34,7 @@ class TicketController extends Controller
             'mobile' => $ticket->mobile,
             'threads' => $ticket->threads,
             'priority' => $ticket->priority,
+            'organization' => $ticket->organization
         ];
     }
 

@@ -30,7 +30,8 @@ class CreateTicketRequest extends FormRequest
             'description' => 'required|string',
             'mobile' => 'required|string',
             'email' => 'required|email',
-            'priority' => ['nullable', Rule::in(PriorityEnums::getEnumPriority())]
+            'priority' => ['nullable', Rule::in(PriorityEnums::getEnumPriority())],
+            'organization_id' => ['nullable', 'exists:organizations,id'],
         ];
     }
 }
