@@ -46,7 +46,7 @@ class TicketController extends Controller
         try {
             DB::beginTransaction();
 
-            $ticket = $ticketRepository->store($request->all());
+            $ticket = $ticketRepository->store($request->all(), auth()->user());
 
             DB::commit();
 

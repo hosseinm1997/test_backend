@@ -32,6 +32,7 @@ class CreateTicketRequest extends FormRequest
             'email' => 'required|email',
             'priority' => ['nullable', Rule::in(PriorityEnums::getEnumPriority())],
             'organization_id' => ['nullable', 'exists:organizations,id'],
+            'file' => 'nullable|mimes:jpg,bmp,png'
         ];
     }
 }
