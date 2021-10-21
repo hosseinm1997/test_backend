@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\Thread\ThreadController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\User\ProfileController;
 use App\Models\User;
@@ -84,4 +85,8 @@ Route::middleware('auth:sanctum')->prefix('tickets')->group(function ($router) {
     $router->get('/', [TicketController::class, 'index']);
     $router->post('/', [TicketController::class, 'store']);
     $router->get('/{ticketId}', [TicketController::class, 'show']);
+});
+
+Route::middleware('auth:sanctum')->prefix('threads')->group(function ($router) {
+    $router->post('/', [ThreadController::class, 'store']);
 });

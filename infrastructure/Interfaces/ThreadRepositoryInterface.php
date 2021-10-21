@@ -4,5 +4,5 @@ namespace Infrastructure\Interfaces;
 
 interface ThreadRepositoryInterface
 {
-    public function store($ticketID, array $data);
+    public function store($ticketId, array $data);
 }

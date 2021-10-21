@@ -24,7 +24,8 @@ class CreateThreadRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'ticket_id' => 'required|exists:tickets,id',
+            'description' => 'required|string'
         ];
     }
 }
