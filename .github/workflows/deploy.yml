@@ -35,6 +35,7 @@ jobs:
         with:
           host: ${{ secrets.IRANVUE_HOST }}
           USERNAME: ${{ secrets.IRANVUE_USERNAME }}
+          PASSWORD: ${{ secrets.IRANVUE_PASSWORD }}
           PORT: ${{ secrets.IRANVUE_PORT }}
-          KEY: ${{ secrets.IRANVUE_SSHKEY }}
+#          KEY: ${{ secrets.IRANVUE_SSHKEY }}
           script: 'cd /var/www/sajamax-backend && ./server_deploy.sh'
