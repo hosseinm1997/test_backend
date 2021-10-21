@@ -3,8 +3,10 @@
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\Thread\ThreadController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\User\ProfileController;
@@ -89,4 +91,9 @@ Route::middleware('auth:sanctum')->prefix('tickets')->group(function ($router) {
 
 Route::middleware('auth:sanctum')->prefix('threads')->group(function ($router) {
     $router->post('/', [ThreadController::class, 'store']);
+});
+
+Route::middleware('auth:sanctum')->group(function ($router) {
+    $router->get('/provinces', [ProvinceController::class, 'index']);
+    $router->get('/get-cities/{provinceId}', [CityController::class, 'getCitiesByProvinceId']);
 });
