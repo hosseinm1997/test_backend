@@ -10,7 +10,8 @@ class TicketRepository implements TicketRepositoryInterface
 {
     public function index()
     {
-        return Ticket::query()->with('organization' ,'createdBy')->latest()->paginate();
+        return Ticket::query()->with('organization' ,'createdBy')
+            ->filtered()->sorted()->latest()->paginate();
     }
 
     public function show($ticketId)
