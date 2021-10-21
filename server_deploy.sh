@@ -23,7 +23,7 @@ php artisan down
 php artisan up
 
 if [[ `ps -acx|grep httpd|wc -l` > 0 ]]; then
-    chown -R apache:apache storage/ bootstrap/cache/
+#    chown -R apache:apache storage/ bootstrap/cache/
 fi
 if [[ `ps -acx|grep nginx|wc -l` > 0 ]]; then
     chown -R www-data:www-data storage/ bootstrap/cache/
