@@ -28,6 +28,16 @@ if (!function_exists('auth_user')) {
     }
 }
 
+//convert persian to english
+if (!function_exists('toEnglishNumber')){
+    function toEnglishNumber($number) {
+        $farsiNumbers = ['۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۰'];
+        $englishNumbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+
+        return str_replace($farsiNumbers, $englishNumbers, $number);
+    }
+}
+
 if (!function_exists('storage_app_path')) {
 
     /**
