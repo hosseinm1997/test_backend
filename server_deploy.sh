@@ -30,3 +30,4 @@ if [[ `ps -acx|grep nginx|wc -l` > 0 ]]; then
 fi
 
 echo "🚀 Application deployed!"
+
