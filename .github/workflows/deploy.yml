@@ -21,20 +21,21 @@ jobs:
 #          source: "."
 #          target: "/home/ftpuser/ftp/sajaamax"
 
-      - name: Executing remote command
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          USERNAME: ${{ secrets.USERNAME }}
-          PORT: ${{ secrets.PORT }}
-          KEY: ${{ secrets.SSHKEY }}
-          script: 'cd /home/ftpuser/ftp/sajaamax && ./server_deploy.sh'
+#      - name: Executing remote command
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.HOST }}
+#          USERNAME: ${{ secrets.USERNAME }}
+#          PORT: ${{ secrets.PORT }}
+#          KEY: ${{ secrets.SSHKEY }}
+#          script: 'cd /home/ftpuser/ftp/sajaamax && ./server_deploy.sh'
 
       - name: Executing remote command on iranvue server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.IRANVUE_HOST }}
           USERNAME: ${{ secrets.IRANVUE_USERNAME }}
+          PASSWORD: ${{ secrets.IRANVUE_PASSWORD }}
           PORT: ${{ secrets.IRANVUE_PORT }}
-          KEY: ${{ secrets.IRANVUE_SSHKEY }}
+#          KEY: ${{ secrets.IRANVUE_SSHKEY }}
           script: 'cd /var/www/sajamax-backend && ./server_deploy.sh'
