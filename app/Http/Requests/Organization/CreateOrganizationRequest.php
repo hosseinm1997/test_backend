@@ -41,7 +41,6 @@ class CreateOrganizationRequest extends FormRequest
             'description' => 'required|string',
             'telephone' => 'required|regex:/^\d{3,20}$/',
             'address' => 'required|string|max:500',
-            'city' => 'required|integer|exists:cities,id',
             'website' => 'string|max:100|url',
             'establishedAt' => 'required|date',
             'managerName' => 'required|string|between:5,50',

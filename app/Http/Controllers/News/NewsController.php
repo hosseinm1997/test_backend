@@ -21,6 +21,8 @@ class NewsController extends Controller
         return News::join('enumerations', 'news.category', '=', 'enumerations.id')
             ->select('news.*', 'enumerations.title as category_title')
             ->addSelect(DB::raw('public.g2j(news.created_at::timestamp) as "created_time" '))
+            ->where('created_by', Auth::id())
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
         //return News::where('created_by', Auth::id())->paginate(10);
@@ -76,6 +78,7 @@ class NewsController extends Controller
             ->select('news.*', 'enumerations.title as category_title')
             ->addSelect(DB::raw('public.g2j(news.created_at::timestamp) as "created_time" '))
             ->where('news.id', $news->id)
+            ->where('news.created_by', Auth::id())
             ->first();
     }
 
