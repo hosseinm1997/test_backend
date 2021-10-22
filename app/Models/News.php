@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class News extends Model
 {
     use HasFactory;
+
+    public function getImgAttribute($value)
+    {
+        return 'https://sajamax.iranvue.ir/'.$value;
+    }
 }
