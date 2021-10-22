@@ -43,8 +43,8 @@ class ProfileController extends Controller
             'password' => [
                 'required',
                 Password::min(8)
-                    ->mixedCase()
-                    ->letters()
+//                    ->mixedCase()
+//                    ->letters()
                     ->numbers()
                     ->uncompromised(),
             ]
