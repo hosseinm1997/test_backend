@@ -27,6 +27,9 @@ class DocumentTypeEnums extends EnumerationAbstract
     const INVENTION = 43;
     const THREAD = 55;
 
+    //news
+    const NEWS = 165;
+
     public function getDirMapping(): array
     {
         return [

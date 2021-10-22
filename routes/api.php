@@ -1,10 +1,12 @@
 <?php
 
+use App\Enumerations\DocumentTypeEnums;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\Thread\ThreadController;
@@ -26,7 +28,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('test', function () {
+Route::post('test', function (Request $request) {
+
+    $fileUploaded = uploadFile($request->file,DocumentTypeEnums::THREAD, 33);
+
+    dd($fileUploaded);
+
 User::where('mobile', '09196145343')->get();
     return response()->json(['hello' => 'world']);
 });
@@ -62,6 +69,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('update-password', [ProfileController::class, 'updatePassword']);
         Route::post('document', [DocumentController::class, 'storeForUser']);
 
+    });
+
+    Route::prefix('news')->group(function ($router) {
+        Route::resource(
+            '/',
+            NewsController::class
+        );
+        Route::post('upload-file', [NewsController::class, 'uploadFileNews']);
     });
 
     Route::get('document/{id}', [DocumentController::class, 'show'])->name('document.show');
