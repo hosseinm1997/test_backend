@@ -6,6 +6,7 @@ use App\Repositories\CityRepository;
 use App\Repositories\ProvinceRepository;
 use App\Repositories\ThreadRepository;
 use App\Repositories\TicketRepository;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Infrastructure\Interfaces\CityRepositoryInterface;
 use Infrastructure\Interfaces\ProvinceRepositoryInterface;
@@ -31,7 +32,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if(config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
     }
 
     private function registerBinding()
