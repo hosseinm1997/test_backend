@@ -15,7 +15,7 @@ class Enumeration extends Model
     use HasFactory;
 
     protected $table = 'enumerations';
-    protected $visible = ['id', 'title', 'order'];
+    protected $visible = ['id', 'title', 'order', 'meta_data'];
     protected $casts = [
         'meta_data' => 'array'
     ];
