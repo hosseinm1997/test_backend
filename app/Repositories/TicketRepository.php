@@ -11,7 +11,7 @@ class TicketRepository implements TicketRepositoryInterface
 {
     public function index()
     {
-        return Ticket::query()->with('organization' ,'createdBy')
+        return Ticket::query()->with('organization' , 'assignedTo', 'createdBy')
             ->filtered()->sorted()->latest()->paginate();
     }
 
@@ -20,14 +20,14 @@ class TicketRepository implements TicketRepositoryInterface
         return Ticket::query()->where('id', $ticketId)->firstOrFail();
     }
 
-    public function store(array $data, User $user)
+    public function store(array $data, User $user = null)
     {
         $ticket = Ticket::query()->create([
            'title'              => $data['title'],
            'mobile'             => $data['mobile'],
            'email'              => $data['email'],
            'organization_id'    => $data['organization_id'],
-           'created_by'         => $user->id,
+           'created_by'         => optional($user)->id,
         ]);
 
         $this->createThreadForTicket($data ,$ticket->id, $user);
@@ -35,7 +35,7 @@ class TicketRepository implements TicketRepositoryInterface
         return $ticket;
     }
 
-    private function createThreadForTicket(array $data, int $ticketId, User $user)
+    private function createThreadForTicket(array $data, int $ticketId, User $user = null)
     {
         /* @var ThreadRepositoryInterface $threadRepository  */
         $threadRepository = app(ThreadRepositoryInterface::class);

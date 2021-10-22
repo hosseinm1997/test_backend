@@ -10,5 +10,5 @@ interface TicketRepositoryInterface
 
     public function show(int $ticketId);
 
-    public function store(array $data, User $user);
+    public function store(array $data, User $user = null);
 }
