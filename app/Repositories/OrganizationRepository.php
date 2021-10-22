@@ -17,7 +17,6 @@ class OrganizationRepository
         $organization->category = $data['category'];
         $organization->telephone = $data['telephone'];
         $organization->address = $data['address'];
-        $organization->city = $data['city'];
         $organization->website = $data['website'] ?? null;
         $organization->established_at = $data['establishedAt'];
         $organization->manager_name = $data['managerName'];
