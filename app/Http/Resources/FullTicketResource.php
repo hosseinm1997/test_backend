@@ -30,6 +30,11 @@ class FullTicketResource extends JsonResource
                 'id' => $this->organization_id,
                 'title' => $this->organization->title
             ] : null,
+            'assigned' => !is_null($this->assigned_to) ? [
+                'id' => $this->assignedTo->id,
+                'first_name' => $this->assignedTo->first_name,
+                'last_name' => $this->assignedTo->last_name,
+            ] : null,
             'threads' => ThreadResource::collection($this->threads)
         ];
     }
