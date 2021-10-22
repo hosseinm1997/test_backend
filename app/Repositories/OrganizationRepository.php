@@ -7,7 +7,7 @@ use App\Enumerations\OrganizationStatusEnums;
 
 class OrganizationRepository
 {
-    public function create(array $data)
+    public function create(array $data): array
     {
         $organization = new Organization();
 
@@ -37,11 +37,22 @@ class OrganizationRepository
             'cityRelation.provinceRelation',
         ]);
 
-        return $organization;
+        return $organization->toArray();
     }
 
-    public function userAlreadyHasOrganization(array $data)
+    public function userAlreadyHasOrganization(array $data): array
     {
-        return Organization::query()->where('owner_user_id', $data['userId'])->exists();
+        return ['exists' => Organization::query()->where('owner_user_id', $data['userId'])->exists()];
+    }
+
+    public function setStatusAsWaitingForVerification(array $data): array
+    {
+        $rowCount = Organization::query()
+            ->where('id', $data['organizationId'])
+            ->update([
+                'status' => OrganizationStatusEnums::WAITING_FOR_VERIFICATION
+            ]);
+
+        return ['result' => $rowCount == 1];
     }
 }

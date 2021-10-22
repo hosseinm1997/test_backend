@@ -20,7 +20,7 @@ class CreateOrganizationRequest extends FormRequest
     {
         $repo = new OrganizationRepository();
 
-        if ($repo->userAlreadyHasOrganization(['userId' => auth()->id()])) {
+        if ($repo->userAlreadyHasOrganization(['userId' => auth()->id()])['exists']) {
             abort(
                 Response::HTTP_UNPROCESSABLE_ENTITY,
                 __('درخواست شما مبنی بر ثبت تشکل قبلا ثبت شده است!')

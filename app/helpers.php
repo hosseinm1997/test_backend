@@ -49,3 +49,14 @@ if (!function_exists('storage_app_path')) {
         return storage_path('app' . DIRECTORY_SEPARATOR . $path);
     }
 }
+
+if (!function_exists('auth_user_organization')) {
+
+    /**
+     * @return \App\Models\Organization|null
+     */
+    function auth_user_organization()
+    {
+        return auth()->user()->organizationRelation;
+    }
+}

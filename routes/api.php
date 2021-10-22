@@ -79,6 +79,8 @@ Route::middleware('auth:sanctum')->group(function () {
             ]);
 
             Route::post('document', [DocumentController::class, 'storeForOrganization']);
+
+            Route::post('documents-completed', [OrganizationController::class, 'documentsCompleted']);
         });
     });
 });

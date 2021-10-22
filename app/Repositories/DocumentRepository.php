@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Enumerations\DocumentStatusEnums;
 use App\Models\Document;
+use Illuminate\Database\Eloquent\Builder;
 
 class DocumentRepository
 {
@@ -52,5 +54,17 @@ class DocumentRepository
     public function getDocumentById(array $data): array
     {
         return Document::with('fileRelation')->findOrFail($data['id'])->toArray();
+    }
+
+    public function getDocumentsBuilder(array $data): array
+    {
+        $builder = Document::query()->where(function (Builder $builder) use ($data) {
+            $builder->where('organization_id', $data['organizationId']);
+            $builder->orWhere('user_id', $data['userId']);
+        })->where('status', DocumentStatusEnums::WAITING_FOR_VERIFICATION);
+
+        return [
+            'builder' => $builder
+        ];
     }
 }

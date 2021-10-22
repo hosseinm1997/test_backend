@@ -4,15 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Document
  * @property File fileRelation
+ * @property Enumeration typeRelation
  * @package App\Models
  */
 class Document extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table = 'documents';
 
     protected $fillable = [
@@ -26,5 +28,10 @@ class Document extends Model
     public function fileRelation()
     {
         return $this->belongsTo(File::class, 'file_id', 'id');
+    }
+
+    public function typeRelation()
+    {
+        return $this->belongsTo(Enumeration::class, 'type', 'id');
     }
 }

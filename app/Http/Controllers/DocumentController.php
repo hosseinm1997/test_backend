@@ -39,7 +39,7 @@ class DocumentController extends Controller
      */
     public function storeForOrganization(CreateDocumentRequest $request)
     {
-        $organization = auth_user()->organizationRelation;
+        $organization = auth_user_organization();
         $service = new DocumentUploadService();
 
         return $service->storeOrganizationDocument(
