@@ -5,6 +5,7 @@ namespace App\Http\Controllers\News;
 use App\Enumerations\DocumentTypeEnums;
 use App\Http\Controllers\Controller;
 use App\Models\News;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -63,7 +64,24 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|min:10',
+            'description' => 'required|min:11',
+            'category' => 'required',
+            'address' =>'required'
+        ]);
 
+        $news = new News();
+
+        $news->title = $request->title;
+        $news->content = $request->description;
+        $news->category = $request->category;
+        $news->created_by = Auth::id();
+        $news->img = $request->address;
+
+        $news->save();
+
+        return ['message' => 'اخبار باموفقیت ثبت شد.', 'result'=> true];
     }
 
     /**
