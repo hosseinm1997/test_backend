@@ -54,6 +54,17 @@ if (!function_exists('storage_app_path')) {
     }
 }
 
+if (!function_exists('auth_user_organization')) {
+
+    /**
+     * @return \App\Models\Organization|null
+     */
+    function auth_user_organization()
+    {
+        return auth()->user()->organizationRelation;
+    }
+}
+
 if (!function_exists('generateAddress')) {
 
     function generateAddress(UploadedFile $file, string $directory, int $entityId)

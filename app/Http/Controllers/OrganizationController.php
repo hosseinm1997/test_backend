@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enumerations\OrganizationStatusEnums;
 use App\Http\Requests\Organization\CreateOrganizationRequest;
+use App\Repositories\EnumerationRepository;
 use App\Repositories\OrganizationRepository;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrganizationController extends Controller
 {
@@ -32,14 +35,14 @@ class OrganizationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CreateOrganizationRequest $request
-     * @return \Illuminate\Http\Response
+     * @return array
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(CreateOrganizationRequest $request)
     {
         $repo = new OrganizationRepository();
 
-        return $repo->create($request->all())->toArray();
+        return $repo->create($request->all());
     }
 
     /**
@@ -85,5 +88,33 @@ class OrganizationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function documentsCompleted()
+    {
+        if (auth_user_organization()->status != OrganizationStatusEnums::WAITING_FOR_COMPLETION) {
+            abort(
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                'وضعیت تشکل باید در حال تکمیل مدارک باشد!'
+            );
+        }
+
+        $repo = new EnumerationRepository();
+        $missingDocTypes = $repo->getAllMissingRequiredDocumentTypes([
+            'organizationId' => auth_user_organization()->id,
+            'userId' => auth_user()->id
+        ]);
+
+        if (count($missingDocTypes) > 0) {
+            $missingDocTitles = collect($missingDocTypes)->pluck('title')->implode(',');
+
+            abort(
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                'مدارک زیر ارسال نشده اند:' . ',' . $missingDocTitles
+            );
+        }
+
+        $repo = new OrganizationRepository();
+        return $repo->setStatusAsWaitingForVerification(['organizationId' => auth_user_organization()->id]);
     }
 }
