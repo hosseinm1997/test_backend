@@ -6,6 +6,7 @@ use Throwable;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TicketResource;
+use App\Http\Resources\FullTicketResource;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\Ticket\CreateTicketRequest;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
@@ -25,18 +26,7 @@ class TicketController extends Controller
         /* @var TicketRepositoryInterface $repository */
         $repository = app(TicketRepositoryInterface::class);
 
-        $ticket = $repository->show($ticketId);
-
-        return [
-            'id' => $ticket->id,
-            'email' => $ticket->email,
-            'title' => $ticket->title,
-            'status' => $ticket->status,
-            'mobile' => $ticket->mobile,
-            'threads' => $ticket->threads,
-            'priority' => $ticket->priority,
-            'organization' => $ticket->organization
-        ];
+        return new FullTicketResource($repository->show($ticketId));
     }
 
     public function store(CreateTicketRequest $request)

@@ -2,15 +2,14 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TicketResource extends JsonResource
+class FullTicketResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -31,6 +30,7 @@ class TicketResource extends JsonResource
                 'id' => $this->organization_id,
                 'title' => $this->organization->title
             ] : null,
+            'threads' => ThreadResource::collection($this->threads)
         ];
     }
 }
