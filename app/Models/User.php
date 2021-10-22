@@ -49,7 +49,7 @@ class User extends Authenticatable implements CanResetPassword
 
     public function sendPasswordResetNotification($token)
     {
-        $address = 'https://sajamax.iranvue.ir/recovery-password?token=' . $token;
+        $address = 'https://sajamax.iranvue.ir/recovery-password?token=' . $token .'&mobile='.request()->mobile;
 
         sendSmsByPattern(request()->mobile,
             config('pattern.reset_password'),
