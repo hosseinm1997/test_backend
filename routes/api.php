@@ -71,11 +71,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     });
 
+    Route::resource(
+        'news',
+        NewsController::class
+    );
+
     Route::prefix('news')->group(function ($router) {
-        Route::resource(
-            '/',
-            NewsController::class
-        );
+
         Route::post('upload-file', [NewsController::class, 'uploadFileNews']);
     });
 
