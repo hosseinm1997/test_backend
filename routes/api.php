@@ -95,6 +95,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
             Route::post('document', [DocumentController::class, 'storeForOrganization']);
 
+            Route::get('document', [DocumentController::class, 'index']);
+
             Route::post('documents-completed', [OrganizationController::class, 'documentsCompleted']);
         });
     });

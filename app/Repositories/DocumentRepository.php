@@ -67,4 +67,38 @@ class DocumentRepository
             'builder' => $builder
         ];
     }
+
+    public function getAllDocuments(array $data): array
+    {
+        $documents = Document::query()->with([
+            'typeRelation',
+            'statusRelation',
+            'fileRelation'
+        ])->where(function (Builder $builder) use ($data) {
+            $builder->where('organization_id', $data['organizationId']);
+            $builder->orWhere('user_id', $data['userId']);
+        })->get();
+
+        $result = [];
+        /** @var Document $document */
+        foreach ($documents as $document) {
+            $result[] = [
+                'type' => [
+                    'id' => $document->typeRelation->id,
+                    'title' => $document->typeRelation->title,
+                ],
+
+                'status' => [
+                    'id' => $document->statusRelation->id,
+                    'title' => $document->statusRelation->title,
+                ],
+
+                'required' => !( ($document->typeRelation->meta_data)['optional'] ),
+
+                'url' => route('document.show', ['id' => $document->id]),
+            ];
+        }
+
+        return $result;
+    }
 }

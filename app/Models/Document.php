@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class Document
  * @property File fileRelation
  * @property Enumeration typeRelation
+ * @property Enumeration statusRelation
  * @package App\Models
  */
 class Document extends Model
@@ -33,5 +34,10 @@ class Document extends Model
     public function typeRelation()
     {
         return $this->belongsTo(Enumeration::class, 'type', 'id');
+    }
+
+    public function statusRelation()
+    {
+        return $this->belongsTo(Enumeration::class, 'status', 'id');
     }
 }
