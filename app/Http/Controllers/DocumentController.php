@@ -13,11 +13,15 @@ class DocumentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return array
      */
     public function index()
     {
-        //
+        $repo = new DocumentRepository();
+        return $repo->getAllDocuments([
+            'organizationId' => auth_user_organization()->id,
+            'userId' => auth_user()->id
+        ]);
     }
 
     /**
