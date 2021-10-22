@@ -106,7 +106,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->prefix('tickets')->group(function ($router) {
     $router->get('/', [TicketController::class, 'index']);
-    $router->post('/', [TicketController::class, 'store']);
+    $router->post('/', [TicketController::class, 'store'])->withoutMiddleware('auth:sanctum');
     $router->get('/{ticketId}', [TicketController::class, 'show']);
 });
 

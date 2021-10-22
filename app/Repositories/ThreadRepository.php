@@ -12,9 +12,15 @@ class ThreadRepository implements ThreadRepositoryInterface
     /**
      * @throws \Exception
      */
-    public function store($ticketId, array $data, User $user)
+    public function store($ticketId, array $data, User $user = null)
     {
-        $fileUploaded = uploadFile($data['file'],DocumentTypeEnums::THREAD, $user->id);
+        if (isset($data['organization_id'])) {
+            $entityId = $data['organization_id'];
+        } elseif(isset($data['assigned_to'])) {
+            $entityId = $data['assigned_to'];
+        }
+
+        $fileUploaded = uploadFile($data['file'],DocumentTypeEnums::THREAD, $entityId);
 
         return Thread::create([
             'ticket_id' => $ticketId,
