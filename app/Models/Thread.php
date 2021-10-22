@@ -13,6 +13,7 @@ class Thread extends Model
 
     protected $fillable = [
         'ticket_id',
-        'description'
+        'description',
+        'attachment_file_id'
     ];
 }

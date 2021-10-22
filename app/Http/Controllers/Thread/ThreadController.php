@@ -19,7 +19,7 @@ class ThreadController extends Controller
         try {
             DB::beginTransaction();
 
-            $thread = $threadRepository->store($request->input('ticket_id'), $request->all());
+            $thread = $threadRepository->store($request->input('ticket_id'), $request->all(), auth()->user());
 
             DB::commit();
 

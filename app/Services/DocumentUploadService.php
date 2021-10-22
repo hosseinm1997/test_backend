@@ -2,49 +2,30 @@
 
 namespace App\Services;
 
-use App\Enumerations\DocumentStatusEnums;
-use App\Enumerations\DocumentTypeEnums;
-use App\Enumerations\FileCategoryEnums;
-use App\Enumerations\OrganizationStatusEnums;
-use App\Models\Organization;
 use App\Models\User;
-use App\Repositories\DocumentRepository;
-use App\Repositories\FileRepository;
+use App\Models\Organization;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Vinkla\Hashids\Facades\Hashids;
+use App\Repositories\FileRepository;
+use App\Enumerations\DocumentTypeEnums;
+use App\Enumerations\FileCategoryEnums;
+use App\Repositories\DocumentRepository;
+use App\Enumerations\DocumentStatusEnums;
+use App\Enumerations\OrganizationStatusEnums;
 
 class DocumentUploadService
 {
-    const DIR_MAPPING = [
-        DocumentTypeEnums::NATIONAL_CARD_PICTURE => 'documents/users/identities',
-        DocumentTypeEnums::STATUTE_PICTURE => 'documents/organizations/identities',
-        DocumentTypeEnums::OFFICIAL_JOURNAL_PICTURE => 'documents/organizations/identities',
-        DocumentTypeEnums::SERVICE_INTRODUCTION_FORM => 'documents/organizations/identities',
-        DocumentTypeEnums::SECRETARY_INTRODUCTION_LETTER_PICTURE => 'documents/organizations/identities',
-        DocumentTypeEnums::REGISTRATION_CERTIFICATE => 'documents/organizations/identities',
-        DocumentTypeEnums::ACTIVITY_LICENSE => 'documents/organizations/identities',
-        DocumentTypeEnums::LOCATION_INFO_PICTURE => 'documents/organizations/identities',
-        DocumentTypeEnums::ORGANIZATION_MEMBERS => 'documents/organizations/introductions',
-        DocumentTypeEnums::ORGANIZATION_COMPANIES => 'documents/organizations/introductions',
-        DocumentTypeEnums::ORGANIZATION_BOOK => 'documents/organizations/introductions',
-        DocumentTypeEnums::ORGANIZATION_MAGAZINE => 'documents/organizations/introductions',
-        DocumentTypeEnums::ORGANIZATION_ARTICLE => 'documents/organizations/introductions',
-        DocumentTypeEnums::RESEARCH_COURSE => 'documents/organizations/introductions',
-        DocumentTypeEnums::MEETING_AND_SEMINAR => 'documents/organizations/introductions',
-        DocumentTypeEnums::INVENTION => 'documents/organizations/introductions',
-    ];
+    private $dirMapping;
+    private $mandatoryDocument;
 
-    const MANDATORY_DOCUMENTS = [
-        DocumentTypeEnums::NATIONAL_CARD_PICTURE,
-        DocumentTypeEnums::STATUTE_PICTURE,
-        DocumentTypeEnums::OFFICIAL_JOURNAL_PICTURE,
-        DocumentTypeEnums::SERVICE_INTRODUCTION_FORM,
-        DocumentTypeEnums::SECRETARY_INTRODUCTION_LETTER_PICTURE,
-        DocumentTypeEnums::REGISTRATION_CERTIFICATE,
-        DocumentTypeEnums::ACTIVITY_LICENSE,
-        DocumentTypeEnums::LOCATION_INFO_PICTURE,
-    ];
+    public function __construct()
+    {
+        $documentClass = new DocumentTypeEnums();
+
+        $this->dirMapping = $documentClass->getDirMapping();
+        $this->mandatoryDocument = $documentClass->getMandatoryDocument();
+    }
 
     private function upload(UploadedFile $file, string $directory, int $entityId)
     {
@@ -54,7 +35,7 @@ class DocumentUploadService
 
     private function canStoreThisOrganizationDocument(int $type, Organization $organization): bool
     {
-        if (!in_array($type, self::MANDATORY_DOCUMENTS)) {
+        if (!in_array($type, $this->mandatoryDocument)) {
             return true;
         }
 
@@ -102,7 +83,7 @@ class DocumentUploadService
         }
 
         try {
-            $address = $this->upload($file, self::DIR_MAPPING[$type], $organization->id);
+            $address = $this->upload($file, $this->dirMapping[$type], $organization->id);
         } catch (\Throwable $exception) {
             throw new \Exception('امکان ارسال فایل وجود ندارد!');
         }
@@ -132,7 +113,7 @@ class DocumentUploadService
             $documentEntity = $documentRepo->create([
                 'file_id' => $fileEntity['id'],
                 'type' => $type,
-                'status' => in_array($type, self::MANDATORY_DOCUMENTS)
+                'status' => in_array($type, $this->mandatoryDocument)
                     ? DocumentStatusEnums::WAITING_FOR_VERIFICATION
                     : DocumentStatusEnums::NO_NEED_TO_VERIFY,
                 'organization_id' => $organization->id
@@ -163,7 +144,7 @@ class DocumentUploadService
         }
 
         try {
-            $address = $this->upload($file, self::DIR_MAPPING[$type], $user->id);
+            $address = $this->upload($file, $this->dirMapping[$type], $user->id);
         } catch (\Throwable $exception) {
             dd($exception);
             throw new \Exception('امکان ارسال فایل وجود ندارد!', );
@@ -194,7 +175,7 @@ class DocumentUploadService
             $documentEntity = $documentRepo->create([
                 'file_id' => $fileEntity['id'],
                 'type' => $type,
-                'status' => in_array($type, self::MANDATORY_DOCUMENTS)
+                'status' => in_array($type, $this->mandatoryDocument)
                     ? DocumentStatusEnums::WAITING_FOR_VERIFICATION
                     : DocumentStatusEnums::NO_NEED_TO_VERIFY,
                 'user_id' => $user->id

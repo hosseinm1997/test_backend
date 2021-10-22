@@ -25,7 +25,44 @@ class DocumentTypeEnums extends EnumerationAbstract
     const RESEARCH_COURSE = 41;
     const MEETING_AND_SEMINAR = 42;
     const INVENTION = 43;
+    const THREAD = 55;
 
+    public function getDirMapping(): array
+    {
+        return [
+            self::NATIONAL_CARD_PICTURE => 'documents/users/identities',
+            self::STATUTE_PICTURE => 'documents/organizations/identities',
+            self::OFFICIAL_JOURNAL_PICTURE => 'documents/organizations/identities',
+            self::SERVICE_INTRODUCTION_FORM => 'documents/organizations/identities',
+            self::SECRETARY_INTRODUCTION_LETTER_PICTURE => 'documents/organizations/identities',
+            self::REGISTRATION_CERTIFICATE => 'documents/organizations/identities',
+            self::ACTIVITY_LICENSE => 'documents/organizations/identities',
+            self::LOCATION_INFO_PICTURE => 'documents/organizations/identities',
+            self::ORGANIZATION_MEMBERS => 'documents/organizations/introductions',
+            self::ORGANIZATION_COMPANIES => 'documents/organizations/introductions',
+            self::ORGANIZATION_BOOK => 'documents/organizations/introductions',
+            self::ORGANIZATION_MAGAZINE => 'documents/organizations/introductions',
+            self::ORGANIZATION_ARTICLE => 'documents/organizations/introductions',
+            self::RESEARCH_COURSE => 'documents/organizations/introductions',
+            self::MEETING_AND_SEMINAR => 'documents/organizations/introductions',
+            self::INVENTION => 'documents/organizations/introductions',
+            self::THREAD => 'documents/organizations/attachment/thread',
+        ];
+    }
+
+    public function getMandatoryDocument(): array
+    {
+        return [
+            DocumentTypeEnums::NATIONAL_CARD_PICTURE,
+            DocumentTypeEnums::STATUTE_PICTURE,
+            DocumentTypeEnums::OFFICIAL_JOURNAL_PICTURE,
+            DocumentTypeEnums::SERVICE_INTRODUCTION_FORM,
+            DocumentTypeEnums::SECRETARY_INTRODUCTION_LETTER_PICTURE,
+            DocumentTypeEnums::REGISTRATION_CERTIFICATE,
+            DocumentTypeEnums::ACTIVITY_LICENSE,
+            DocumentTypeEnums::LOCATION_INFO_PICTURE,
+        ];
+    }
 
     public static function provideDataToSeed(): array
     {
