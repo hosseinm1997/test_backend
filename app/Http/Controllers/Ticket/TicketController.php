@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ticket;
 use Throwable;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TicketResource;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\Ticket\CreateTicketRequest;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
@@ -13,18 +14,18 @@ class TicketController extends Controller
 {
     public function index()
     {
-        /* @var TicketRepositoryInterface $repository  */
+        /* @var TicketRepositoryInterface $repository */
         $repository = app(TicketRepositoryInterface::class);
 
-        return $repository->index();
+        return TicketResource::collection($repository->index());
     }
 
     public function show($ticketId)
     {
-        /* @var TicketRepositoryInterface $repository  */
+        /* @var TicketRepositoryInterface $repository */
         $repository = app(TicketRepositoryInterface::class);
 
-        $ticket =$repository->show($ticketId);
+        $ticket = $repository->show($ticketId);
 
         return [
             'id' => $ticket->id,
@@ -40,7 +41,7 @@ class TicketController extends Controller
 
     public function store(CreateTicketRequest $request)
     {
-        /* @var TicketRepositoryInterface $ticketRepository  */
+        /* @var TicketRepositoryInterface $ticketRepository */
         $ticketRepository = app(TicketRepositoryInterface::class);
 
         try {
