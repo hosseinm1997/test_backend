@@ -24,6 +24,7 @@ class TicketRepository implements TicketRepositoryInterface
     {
         $ticket = Ticket::query()->create([
            'title'              => $data['title'],
+           'name'               => $data['name'],
            'mobile'             => $data['mobile'],
            'email'              => $data['email'],
            'organization_id'    => $data['organization_id'],

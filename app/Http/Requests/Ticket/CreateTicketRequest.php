@@ -27,6 +27,7 @@ class CreateTicketRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
+            'name' => 'required|string',
             'description' => 'required|string',
             'mobile' => 'required|string',
             'email' => 'required|email',
