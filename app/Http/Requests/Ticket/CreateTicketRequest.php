@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Ticket;
 
 use Illuminate\Validation\Rule;
+use App\Enumerations\Ticket\TypeEnum;
 use App\Enumerations\Ticket\PriorityEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,6 +26,8 @@ class CreateTicketRequest extends FormRequest
      */
     public function rules()
     {
+        $enumType = TypeEnum::getAllEnumType();
+
         return [
             'title' => 'required|string',
             'name' => 'required|string',
@@ -33,7 +36,9 @@ class CreateTicketRequest extends FormRequest
             'email' => 'required|email',
             'priority' => ['nullable', Rule::in(PriorityEnums::getEnumPriority())],
             'organization_id' => ['nullable', 'exists:organizations,id'],
-            'file' => 'nullable|mimes:jpg,bmp,png'
+            'file' => 'nullable|mimes:jpg,bmp,png',
+            'send_type' => ['required', 'int', Rule::in($enumType)],
+            'receipt_type' => ['required', 'int', Rule::in($enumType)],
         ];
     }
 }
