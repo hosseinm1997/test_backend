@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Ticket;
 
 use Illuminate\Validation\Rule;
-use App\Enumerations\PriorityEnums;
+use App\Enumerations\Ticket\PriorityEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateTicketRequest extends FormRequest
