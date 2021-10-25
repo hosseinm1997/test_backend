@@ -99,6 +99,28 @@ class DocumentRepository
             ];
         }
 
+        $repo = new EnumerationRepository();
+        $missingDocTypes = $repo->getAllMissingRequiredDocumentTypes([
+            'organizationId' => $data['organizationId'],
+            'userId' => $data['userId'],
+        ]);
+
+        foreach ($missingDocTypes as $missingDocType) {
+
+            $result[] = [
+                'type' => [
+                    'id' => $missingDocType['id'],
+                    'title' => $missingDocType['title'],
+                ],
+
+                'status' => null,
+
+                'required' => !$missingDocType['meta_data']['optional'],
+
+                'url' => null,
+
+            ];
+        }
         return $result;
     }
 }

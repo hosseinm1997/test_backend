@@ -102,7 +102,8 @@ class OrganizationController extends Controller
         $repo = new EnumerationRepository();
         $missingDocTypes = $repo->getAllMissingRequiredDocumentTypes([
             'organizationId' => auth_user_organization()->id,
-            'userId' => auth_user()->id
+            'userId' => auth_user()->id,
+            'optional' => 'false',
         ]);
 
         if (count($missingDocTypes) > 0) {

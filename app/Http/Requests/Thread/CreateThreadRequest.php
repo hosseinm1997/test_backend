@@ -25,7 +25,8 @@ class CreateThreadRequest extends FormRequest
     {
         return [
             'ticket_id' => 'required|exists:tickets,id',
-            'description' => 'required|string'
+            'description' => 'required|string',
+            'file' => 'nullable|mimes:jpg,bmp,png'
         ];
     }
 }

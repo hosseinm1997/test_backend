@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Models\Ticket;
 use App\Models\User;
+use App\Models\Ticket;
 use Infrastructure\Interfaces\ThreadRepositoryInterface;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
 
@@ -24,10 +24,13 @@ class TicketRepository implements TicketRepositoryInterface
     {
         $ticket = Ticket::query()->create([
            'title'              => $data['title'],
+           'name'               => $data['name'],
            'mobile'             => $data['mobile'],
            'email'              => $data['email'],
            'organization_id'    => $data['organization_id'],
            'created_by'         => optional($user)->id,
+           'send_type'          => $data['send_type'],
+           'receipt_type'       => $data['receipt_type'],
         ]);
 
         $this->createThreadForTicket($data ,$ticket->id, $user);

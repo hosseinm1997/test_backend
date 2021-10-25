@@ -18,16 +18,20 @@ class EnumerationRepository
         /** @var Builder $sub */
         $sub = $repo->getDocumentsBuilder($data)['builder'];
 
-        return Enumeration::query()
+        $builder = Enumeration::query()
             ->leftJoin(
                 DB::raw('(' .$sub->toSql() . ') as documents'),
                 'enumerations.id',
                 'documents.type'
             )
             ->mergeBindings($sub->getQuery())
-            ->where('parent_id', DocumentTypeEnums::PARENT_ID)
-            ->whereRaw("meta_data->>'optional' = 'false'")
-            ->whereNull('documents.id')
+            ->where('parent_id', DocumentTypeEnums::PARENT_ID);
+
+        if (isset($data['optional'])) {
+            $builder->whereRaw("meta_data->>'optional' = '" . $data['optional'] . "'");
+        }
+
+        return $builder->whereNull('documents.id')
             ->get(['enumerations.*'])
             ->toArray();
     }
