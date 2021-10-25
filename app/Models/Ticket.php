@@ -29,9 +29,26 @@ class Ticket extends Model
         'receipt_type',
     ];
 
-    public $searchable = ['id', 'title', 'mobile'];
+    public $searchable = [
+        'title',
+        'name',
+        'mobile',
+        'email',
+        'organization:name',
+        'send_type',
+        'receipt_type',
+        'is_accepted',
+        'created_at',
+        'updated_at',
+        'created_by'
+    ];
 
-    public $sortable = ['id', 'created_at', 'updated_at', 'created_by'];
+    public $sortable = [
+        'id',
+        'created_at',
+        'updated_at',
+        'created_by'
+    ];
 
 
     public function threads(): HasMany
