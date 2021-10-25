@@ -119,3 +119,4 @@ class OrganizationController extends Controller
         return $repo->setStatusAsWaitingForVerification(['organizationId' => auth_user_organization()->id]);
     }
 }
+//
