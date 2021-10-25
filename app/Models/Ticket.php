@@ -24,7 +24,9 @@ class Ticket extends Model
         'created_by',
         'assigned_to',
         'organization_id',
-        'priority'
+        'priority',
+        'send_type',
+        'receipt_type',
     ];
 
     public $searchable = ['id', 'title', 'mobile'];
