@@ -6,9 +6,11 @@ use Throwable;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TicketResource;
+use App\Enumerations\DocumentTypeEnums;
 use App\Http\Resources\FullTicketResource;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\Ticket\CreateTicketRequest;
+use Infrastructure\Interfaces\ThreadRepositoryInterface;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
 
 class TicketController extends Controller
@@ -33,11 +35,26 @@ class TicketController extends Controller
     {
         /* @var TicketRepositoryInterface $ticketRepository */
         $ticketRepository = app(TicketRepositoryInterface::class);
+        /* @var ThreadRepositoryInterface $threadRepository */
+        $threadRepository = app(ThreadRepositoryInterface::class);
+
+        $user = auth()->user();
 
         try {
             DB::beginTransaction();
 
-            $ticket = $ticketRepository->store($request->all(), auth()->user());
+            $ticket = $ticketRepository->store($request->all(), $user);
+
+            $fileId = null;
+            if ($request->hasFile('file')) {
+                $fileId = uploadFile(
+                    $request->file('file'),
+                    DocumentTypeEnums::THREAD,
+                    $request->input('organization_id')
+                )['id'];
+            }
+
+            $threadRepository->store($ticket->id, $fileId, $request->all(), $user);
 
             DB::commit();
 

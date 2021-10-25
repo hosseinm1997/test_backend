@@ -6,5 +6,5 @@ use App\Models\User;
 
 interface ThreadRepositoryInterface
 {
-    public function store($ticketId, array $data, User $user = null);
+    public function store(int $ticketId, $fileId, array $data, User $user = null);
 }
