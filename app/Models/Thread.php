@@ -14,6 +14,8 @@ class Thread extends Model
     protected $fillable = [
         'ticket_id',
         'description',
+        'send_type',
+        'sender_user_id',
         'attachment_file_id'
     ];
 }

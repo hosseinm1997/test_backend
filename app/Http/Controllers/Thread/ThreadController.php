@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Thread;
 use Throwable;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Vinkla\Hashids\Facades\Hashids;
+use App\Enumerations\FileCategoryEnums;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\Thread\CreateThreadRequest;
 use Infrastructure\Interfaces\ThreadRepositoryInterface;
@@ -15,11 +17,19 @@ class ThreadController extends Controller
     {
         /* @var ThreadRepositoryInterface $threadRepository  */
         $threadRepository = app(ThreadRepositoryInterface::class);
-
+        $fileId = null;
         try {
             DB::beginTransaction();
 
-            $thread = $threadRepository->store($request->input('ticket_id'), $request->all(), auth()->user());
+            if ($request->hasFile('file')) {
+                $dir = 'tickets/' . Hashids::encode($request->input('ticket_id'));
+                $fileId = uploadFile(
+                    $request->file('file'),
+                    $dir,
+                    FileCategoryEnums::THREAD_ATTACHMENT)['id'];
+            }
+
+            $thread = $threadRepository->store($request->input('ticket_id'), $fileId, $request->all(), auth()->user());
 
             DB::commit();
 

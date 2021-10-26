@@ -15,8 +15,10 @@ class ThreadRepository implements ThreadRepositoryInterface
     {
         return Thread::create([
             'ticket_id' => $ticketId,
+            'attachment_file_id' => $fileId,
             'description' => $data['description'],
-            'attachment_file_id' => $fileId
+            'send_type' => $data['send_type'],
+            'sender_user_id' => optional($user)->id
         ]);
     }
 }

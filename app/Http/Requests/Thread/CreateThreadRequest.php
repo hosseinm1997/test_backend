@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Thread;
 
+use Illuminate\Validation\Rule;
+use App\Enumerations\Ticket\TypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateThreadRequest extends FormRequest
@@ -26,7 +28,11 @@ class CreateThreadRequest extends FormRequest
         return [
             'ticket_id' => 'required|exists:tickets,id',
             'description' => 'required|string',
-            'file' => 'nullable|mimes:jpg,bmp,png'
+            'file' => 'nullable|mimes:jpg,bmp,png',
+            'send_type' => ['required', Rule::in([
+                TypeEnum::MANAGEMENT,
+                TypeEnum::ORGANIZATION
+            ])],
         ];
     }
 }
