@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enumerations\OrganizationStatusEnums;
 use App\Http\Requests\Organization\CreateOrganizationRequest;
+use App\Models\Organization;
 use App\Repositories\EnumerationRepository;
 use App\Repositories\OrganizationRepository;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class OrganizationController extends Controller
      */
     public function index()
     {
-        //
+        return Organization::where('status',OrganizationStatusEnums::ACCEPTED_BY_MANAGER)->get();
     }
 
     /**
