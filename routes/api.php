@@ -105,6 +105,7 @@ Route::middleware('auth:sanctum')->group(function () {
         });
     });
 });
+Route::get('organizations', [OrganizationController::class, 'index']);
 
 Route::middleware('auth:sanctum')->prefix('tickets')->group(function ($router) {
     $router->get('/', [TicketController::class, 'index']);

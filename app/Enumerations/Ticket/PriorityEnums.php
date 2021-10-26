@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Enumerations;
+namespace App\Enumerations\Ticket;
 
-class PriorityEnums
+final class PriorityEnums
 {
     const GROUP_ID = 50;
 
