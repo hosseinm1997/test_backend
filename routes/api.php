@@ -1,6 +1,7 @@
 <?php
 
 use App\Enumerations\DocumentTypeEnums;
+use App\Http\Controllers\Announcement\AnnouncementController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\AuthController;
@@ -77,8 +78,13 @@ Route::middleware('auth:sanctum')->group(function () {
     );
 
     Route::prefix('news')->group(function ($router) {
-
         Route::post('upload-file', [NewsController::class, 'uploadFileNews']);
+    });
+
+    Route::prefix('announcement')->group(function ($router) {
+        Route::get('/', [AnnouncementController::class, 'index']);
+        Route::post('/', [AnnouncementController::class, 'store']);
+        Route::delete('/{announcement}', [AnnouncementController::class, 'destroy']);
     });
 
     Route::get('document/{id}', [DocumentController::class, 'show'])->name('document.show');
