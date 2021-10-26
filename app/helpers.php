@@ -67,11 +67,9 @@ if (!function_exists('auth_user_organization')) {
 
 if (!function_exists('generateAddress')) {
 
-    function generateAddress(UploadedFile $file, string $directory, int $entityId)
+    function generateAddress(UploadedFile $file, string $directory)
     {
         try {
-            $directory = $directory . DIRECTORY_SEPARATOR . Hashids::encode($entityId);
-
             return $file->store($directory);
         } catch (\Throwable $exception) {
             throw new \Exception('امکان ارسال فایل وجود ندارد!');
@@ -82,16 +80,21 @@ if (!function_exists('generateAddress')) {
 if (!function_exists('uploadFile')) {
 
     /**
+     * @param UploadedFile $file
+     * @param string $directory
+     * @param int $entityId
+     * @param int $category
+     * @return array
      * @throws Exception
      */
-    function uploadFile(UploadedFile $file, string $directory, int $entityId): array
+    function uploadFile(UploadedFile $file, string $directory, int $category): array
     {
         $repo = new FileRepository();
 
         return $repo->create([
-            'address' => generateAddress($file, $directory, $entityId),
+            'address' => generateAddress($file, $directory),
             'contentType' => $file->getType(),
-            'category' => FileCategoryEnums::DOCUMENT,
+            'category' => $category,
         ]);
     }
 }

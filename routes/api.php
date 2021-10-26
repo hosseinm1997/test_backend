@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ProvinceController;
@@ -82,6 +83,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::get('document/{id}', [DocumentController::class, 'show'])->name('document.show');
+    Route::get('file/{id}', [FileController::class, 'show']);
 
     Route::prefix('organization')->group(function () {
         Route::post('/', [OrganizationController::class, 'store']);

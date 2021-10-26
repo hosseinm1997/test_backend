@@ -2,10 +2,12 @@
 
 namespace App\Repositories;
 
+use App\Enumerations\FileCategoryEnums;
 use App\Models\User;
 use App\Models\Thread;
 use App\Enumerations\DocumentTypeEnums;
 use Infrastructure\Interfaces\ThreadRepositoryInterface;
+use Vinkla\Hashids\Facades\Hashids;
 
 class ThreadRepository implements ThreadRepositoryInterface
 {
@@ -14,13 +16,15 @@ class ThreadRepository implements ThreadRepositoryInterface
      */
     public function store($ticketId, array $data, User $user = null)
     {
-        if (isset($data['organization_id'])) {
-            $entityId = $data['organization_id'];
-        } elseif(isset($data['assigned_to'])) {
-            $entityId = $data['assigned_to'];
-        }
+//        if (isset($data['organization_id'])) {
+//            $entityId = $data['organization_id'];
+//        } elseif(isset($data['assigned_to'])) {
+//            $entityId = $data['assigned_to'];
+//        }
 
-        $fileUploaded = uploadFile($data['file'],DocumentTypeEnums::THREAD, $entityId);
+        $dir = 'tickets/' . Hashids::encode($ticketId);
+
+        $fileUploaded = uploadFile($data['file'], $dir, FileCategoryEnums::THREAD_ATTACHMENT);
 
         return Thread::create([
             'ticket_id' => $ticketId,

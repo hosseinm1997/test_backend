@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\News;
 
 use App\Enumerations\DocumentTypeEnums;
+use App\Enumerations\FileCategoryEnums;
 use App\Http\Controllers\Controller;
 use App\Models\News;
+use Hashids\Hashids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -140,8 +142,8 @@ class NewsController extends Controller
 
     public function uploadFileNews(Request $request)
     {
-        $fileUploaded = uploadFile($request->file,'public/news', Auth::id());
-        $fileUploaded['address'] = str_replace('public', 'storage', $fileUploaded['address']);
+        $directory = 'public/news/' . Hashids::encode(auth_user()->id);
+        $fileUploaded = uploadFile($request->file, $directory, FileCategoryEnums::NEWS_MEDIA);
 
         return $fileUploaded;
 
