@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enumerations\FileCategoryEnums;
 use App\Models\File;
 
 class FileRepository
@@ -15,5 +16,15 @@ class FileRepository
         $file->saveOrFail();
 
         return $file->toArray();
+    }
+
+    public function getFileById(array $data): array
+    {
+        return File::query()
+            ->where('id', $data['fileId'])
+            ->where('category', '!=', FileCategoryEnums::DOCUMENT)
+            ->firstOrFail()
+            ->toArray()
+        ;
     }
 }
