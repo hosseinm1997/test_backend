@@ -29,8 +29,8 @@ class CreateTicketRequest extends FormRequest
         $enumType = TypeEnum::getAllEnumType();
 
         return [
-            'title' => 'required|string',
-            'name' => 'required|string',
+            'title' => 'required|string|min:2|max:255',
+            'name' => 'required|string|min:2|max:255',
             'description' => 'required|string',
             'mobile' => 'required|string',
             'email' => 'required|email',
