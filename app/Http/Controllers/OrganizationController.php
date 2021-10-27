@@ -22,7 +22,7 @@ class OrganizationController extends Controller
     {
         return Organization::join('enumerations', 'organizations.category', '=' , 'enumerations.id')
             ->select('organizations.*', 'enumerations.title as category_title')
-        ->where('status',OrganizationStatusEnums::ACCEPTED_BY_MANAGER)->paginate(40);
+        ->where('status',OrganizationStatusEnums::ACCEPTED_BY_MANAGER)->get();
     }
 
     /**
