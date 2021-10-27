@@ -20,7 +20,9 @@ class OrganizationController extends Controller
      */
     public function index()
     {
-        return Organization::where('status',OrganizationStatusEnums::ACCEPTED_BY_MANAGER)->get();
+        return Organization::join('enumerations', 'organizations.category', '=' , 'enumerations.id')
+            ->select('organizations.*', 'enumerations.title as category_title')
+        ->where('status',OrganizationStatusEnums::ACCEPTED_BY_MANAGER)->paginate(40);
     }
 
     /**
