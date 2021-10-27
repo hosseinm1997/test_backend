@@ -130,7 +130,9 @@ class AuthRepository
 
     public function findUserByNationalCode($request)
     {
-        return User::firstWhere('national_code', $request->nationalCode);
+        return User
+            ::with('organizationRelation.statusRelation')
+            ->firstWhere('national_code', $request->nationalCode);
     }
 
     public function doResetPassword($request)
