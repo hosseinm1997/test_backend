@@ -14,6 +14,7 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\Thread\ThreadController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\User\ProfileController;
+use App\Models\Enumeration;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +45,14 @@ Route::get('deleteUser', function (Request $request) {
     User::where('mobile', $request->mobile)->delete();
 });
 
+Route::get('organization/category', function (Request $request) {
+    return Enumeration::where('parent_id', 4)->get();
+});
+
+Route::get('organization/type', function (Request $request) {
+    return Enumeration::where('parent_id', 1)->get();
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -62,6 +71,7 @@ Route::get('logout', function () {
     Auth::logout();
     return ["message" => "عملیات خروج با موفقیت انجام شد",'logout' => true, 'result' => true];
 });
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('login', [ 'as' => 'login', 'uses' => 'LoginController@do']);
