@@ -27,7 +27,7 @@ class CreateOrganizationsTable extends Migration
             $table->string('telephone', 20);
             $table->string('address', 500);
             $table->string('website', 100)->nullable();
-            $table->integer('city');
+            $table->integer('logo_file_id');
 
             $table->string('manager_name', 50);
             $table->string('secretary_name', 50);

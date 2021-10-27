@@ -24,8 +24,10 @@ class OrganizationRepository
         $organization->directors = is_null($data['directors']) ? null : json_encode($data['directors'], JSON_UNESCAPED_UNICODE);
 
         $organization->status = OrganizationStatusEnums::WAITING_FOR_COMPLETION;
-        $organization->created_by = auth()->id();
-        $organization->owner_user_id = auth()->id();
+        $organization->created_by = $data['createdBy'];
+        $organization->owner_user_id = $data['createdBy'];
+
+        $organization->logo_file_id = $data['logoFileId'];
 
         $organization->saveOrFail();
 
@@ -33,7 +35,6 @@ class OrganizationRepository
             'typeRelation',
             'categoryRelation',
             'statusRelation',
-            'cityRelation.provinceRelation',
         ]);
 
         return $organization->toArray();

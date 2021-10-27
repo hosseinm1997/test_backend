@@ -47,6 +47,7 @@ class CreateOrganizationRequest extends FormRequest
             'secretaryName' => 'required|string|between:5,50',
             'directors' => 'array',
             'directors.*' => 'string',
+            'logo' => 'required|file',
             'type' => [
                 'required',
                 'int',
