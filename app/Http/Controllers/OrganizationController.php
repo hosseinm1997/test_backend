@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enumerations\FileCategoryEnums;
 use App\Enumerations\OrganizationStatusEnums;
 use App\Http\Requests\Organization\CreateOrganizationRequest;
 use App\Models\Organization;
@@ -41,9 +42,16 @@ class OrganizationController extends Controller
      */
     public function store(CreateOrganizationRequest $request)
     {
-        $repo = new OrganizationRepository();
+        $data = $request->all();
+        $data['createdBy'] = auth()->id();
+        $data['logoFileId'] = uploadFile(
+            $request->file('logo'),
+            'public/organizations/logos',
+            FileCategoryEnums::ORGANIZATION_ATTRIBUTES
+        )['id'];
 
-        return $repo->create($request->all());
+        $repo = new OrganizationRepository();
+        return $repo->create($data);
     }
 
     /**
