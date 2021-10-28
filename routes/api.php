@@ -107,7 +107,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::middleware('has.organization')->group(function () {
 
             Route::get('/', [OrganizationController::class, 'show']);
-//            Route::put('/', [OrganizationController::class, 'update']);
+            Route::put('/', [OrganizationController::class, 'update']);
 
             Route::post('document', [DocumentController::class, 'storeForOrganization']);
             Route::get('document', [DocumentController::class, 'index']);

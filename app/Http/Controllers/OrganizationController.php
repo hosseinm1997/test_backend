@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Enumerations\FileCategoryEnums;
 use App\Enumerations\OrganizationStatusEnums;
 use App\Http\Requests\Organization\CreateOrganizationRequest;
+use App\Http\Requests\Organization\UpdateOrganizationRequest;
 use App\Models\Organization;
 use App\Repositories\EnumerationRepository;
 use App\Repositories\OrganizationRepository;
-use Illuminate\Http\Request;
 use Infrastructure\Traits\prepareOrganizationDataTrait;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -30,16 +30,6 @@ class OrganizationController extends Controller
         }
 
         return $organizations;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -76,26 +66,27 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateOrganizationRequest $request
+     * @return array
+     * @throws \Exception
      */
-    public function update(Request $request, $id)
+    public function update(UpdateOrganizationRequest $request)
     {
-        //
+        $repo = new OrganizationRepository();
+        $data = $request->all();
+        $data['model'] = auth_user_organization();
+
+        if ($request->hasFile('logo')) {
+            $data['logoFileId'] = uploadFile(
+                $request->file('logo'),
+                'public/organizations/logos',
+                FileCategoryEnums::ORGANIZATION_ATTRIBUTES
+            )['id'];
+        }
+
+        return $repo->update($data);
     }
 
     /**
