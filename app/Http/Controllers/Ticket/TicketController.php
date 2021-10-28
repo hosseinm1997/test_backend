@@ -2,17 +2,12 @@
 
 namespace App\Http\Controllers\Ticket;
 
-use Throwable;
-use Illuminate\Support\Facades\DB;
-use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Controllers\Controller;
 use App\Enumerations\Ticket\TypeEnum;
 use App\Http\Resources\TicketResource;
-use App\Enumerations\FileCategoryEnums;
+use App\Services\Ticket\TicketService;
 use App\Http\Resources\FullTicketResource;
-use Illuminate\Validation\ValidationException;
 use App\Http\Requests\Ticket\createPeopleTicketRequest;
-use Infrastructure\Interfaces\ThreadRepositoryInterface;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
 
 class TicketController extends Controller
@@ -43,42 +38,13 @@ class TicketController extends Controller
 
     public function createPeopleTicket(createPeopleTicketRequest $request)
     {
-        /* @var TicketRepositoryInterface $ticketRepository */
-        $ticketRepository = app(TicketRepositoryInterface::class);
-        /* @var ThreadRepositoryInterface $threadRepository */
-        $threadRepository = app(ThreadRepositoryInterface::class);
+        $ticketService = new TicketService();
 
-        $fileId = null;
-        $user = auth()->user();
-
-        try {
-            DB::beginTransaction();
-
-            $ticket = $ticketRepository->createPeopleTicket($request->all(), $user);
-
-            if ($request->hasFile('file')) {
-                $dir = 'tickets/' . Hashids::encode($ticket->id);
-                $fileId = uploadFile(
-                    $request->file('file'),
-                    $dir,
-                    FileCategoryEnums::THREAD_ATTACHMENT)['id'];
-            }
-
-            $threadRepository->store(
-                $ticket->id,
-                TypeEnum::PEOPLE,
-                $fileId,
-                $request->all(),
-                $user
-            );
-
-            DB::commit();
-
-            return ['message' => 'تیکت با موفقیت ایجاد شد', 'result' => true, 'ticket_id' => $ticket->id];
-
-        } catch (ValidationException | Throwable $exception) {
-            DB::rollBack();
-            throw $exception;
-        }
+        return $ticketService->create(
+            $request->all(),
+            auth_user(),
+            TypeEnum::PEOPLE,
+            TypeEnum::ORGANIZATION
+        );
     }
 }

@@ -12,5 +12,10 @@ interface TicketRepositoryInterface
 
     public function show(int $ticketId);
 
-    public function createPeopleTicket(array $data, User $user = null);
+    public function store(
+        array $data,
+        User $user = null,
+        int $sendType,
+        int $receiptType
+    );
 }

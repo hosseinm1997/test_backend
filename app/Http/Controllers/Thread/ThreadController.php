@@ -30,11 +30,11 @@ class ThreadController extends Controller
             }
 
             $thread = $threadRepository->store(
+                $request->all(),
+                auth_user(),
+                $fileId,
                 $request->input('ticket_id'),
                 $request->input('send_type'),
-                $fileId,
-                $request->all(),
-                auth()->user()
             );
 
             DB::commit();

@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Models\Ticket;
-use App\Enumerations\Ticket\TypeEnum;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
 
 class TicketRepository implements TicketRepositoryInterface
@@ -29,7 +28,12 @@ class TicketRepository implements TicketRepositoryInterface
         return Ticket::query()->where('id', $ticketId)->firstOrFail();
     }
 
-    public function createPeopleTicket(array $data, User $user = null)
+    public function store(
+        array $data,
+        User $user = null,
+        int $sendType,
+        int $receiptType
+        )
     {
         return Ticket::query()->create([
            'title'              => $data['title'],
@@ -38,8 +42,8 @@ class TicketRepository implements TicketRepositoryInterface
            'email'              => $data['email'],
            'organization_id'    => $data['organization_id'],
            'created_by'         => optional($user)->id,
-           'send_type'          => TypeEnum::PEOPLE,
-           'receipt_type'       => TypeEnum::ORGANIZATION,
+           'send_type'          => $sendType,
+           'receipt_type'       => $receiptType,
         ]);
     }
 }

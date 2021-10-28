@@ -12,11 +12,11 @@ class ThreadRepository implements ThreadRepositoryInterface
      * @throws \Exception
      */
     public function store(
-        int $ticketId,
-        int $sendType,
-        $fileId,
         array $data,
-        User $user = null
+        User $user = null,
+        $fileId,
+        int $ticketId,
+        int $sendType
     )
     {
         return Thread::create([
