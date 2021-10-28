@@ -10,10 +10,11 @@ use App\Enumerations\FileCategoryEnums;
 use Illuminate\Validation\ValidationException;
 use Infrastructure\Interfaces\ThreadRepositoryInterface;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
+use Infrastructure\Interfaces\Services\TicketServiceInterface;
 
-class TicketService
+class TicketService implements TicketServiceInterface
 {
-    public function create(array $data, User $user = null, int $sendType, int $receiptType)
+    public function createTicket(array $data, User $user = null, int $sendType, int $receiptType)
     {
         /* @var TicketRepositoryInterface $ticketRepository */
         $ticketRepository = app(TicketRepositoryInterface::class);

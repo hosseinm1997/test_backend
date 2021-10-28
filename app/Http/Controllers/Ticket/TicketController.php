@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Ticket;
 use App\Http\Controllers\Controller;
 use App\Enumerations\Ticket\TypeEnum;
 use App\Http\Resources\TicketResource;
-use App\Services\Ticket\TicketService;
 use App\Http\Resources\FullTicketResource;
 use App\Http\Requests\Ticket\createPeopleTicketRequest;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
+use Infrastructure\Interfaces\Services\TicketServiceInterface;
 
 class TicketController extends Controller
 {
@@ -38,9 +38,10 @@ class TicketController extends Controller
 
     public function createPeopleTicket(createPeopleTicketRequest $request)
     {
-        $ticketService = new TicketService();
+        /* @var TicketServiceInterface $service */
+        $service = app(TicketServiceInterface::class);
 
-        return $ticketService->create(
+        return $service->createTicket(
             $request->all(),
             auth_user(),
             TypeEnum::PEOPLE,
