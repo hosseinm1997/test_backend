@@ -108,7 +108,7 @@ class DocumentTypeEnums extends EnumerationAbstract
 
             [
                 'id' => self::SERVICE_INTRODUCTION_FORM,
-                'title' => 'فرم معرفی خدمات و اطلاعات',
+                'title' => 'تصویر فرم معرفی خدمات و اطلاعات',
                 'parent_id' => self::PARENT_ID,
                 'meta_data' => json_encode([
                     'optional' => false
@@ -135,7 +135,7 @@ class DocumentTypeEnums extends EnumerationAbstract
 
             [
                 'id' => self::ACTIVITY_LICENSE,
-                'title' => 'پروانه فعالیت',
+                'title' => 'تصویر پروانه فعالیت',
                 'parent_id' => self::PARENT_ID,
                 'meta_data' => json_encode([
                     'optional' => false

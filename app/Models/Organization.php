@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Enumeration categoryRelation
  * @property Enumeration statusRelation
  * @property City cityRelation
+ * @property File logoFileRelation
  *
  * @package App\Models
  */
@@ -20,6 +21,9 @@ class Organization extends Model
     use HasFactory;
 
     protected $table = 'organizations';
+    protected $with = [
+        'logoFileRelation'
+    ];
 
     public function typeRelation()
     {
@@ -55,5 +59,10 @@ class Organization extends Model
             'city',
             'id'
         );
+    }
+
+    public function logoFileRelation()
+    {
+        return $this->belongsTo(File::class, 'logo_file_id', 'id');
     }
 }
