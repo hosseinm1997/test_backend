@@ -20,19 +20,12 @@ class TicketService
         /* @var ThreadRepositoryInterface $threadRepository */
         $threadRepository = app(ThreadRepositoryInterface::class);
 
-        $fileId = null;
         try {
             DB::beginTransaction();
 
             $ticket = $ticketRepository->store($data, $user, $sendType, $receiptType);
 
-            if (!is_null($data['file'])) {
-                $dir = 'tickets/' . Hashids::encode($ticket->id);
-                $fileId = uploadFile(
-                    $data['file'],
-                    $dir,
-                    FileCategoryEnums::THREAD_ATTACHMENT)['id'];
-            }
+            $fileId = $this->getFileId($data['file'], $ticket->id);
 
             $threadRepository->store($data, $user, $fileId, $ticket->id, $sendType);
 
@@ -44,5 +37,17 @@ class TicketService
             DB::rollBack();
             throw $exception;
         }
+    }
+
+    private function getFileId($file, $ticketId)
+    {
+        $fileId = null;
+        if (!is_null($file)) {
+            $dir = 'tickets/' . Hashids::encode($ticketId);
+
+            $fileId = uploadFile($file, $dir, FileCategoryEnums::THREAD_ATTACHMENT)['id'];
+        }
+
+        return $fileId;
     }
 }
