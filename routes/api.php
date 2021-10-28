@@ -73,7 +73,7 @@ Route::get('logout', function () {
 });
 
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function ($router) {
     Route::post('login', [ 'as' => 'login', 'uses' => 'LoginController@do']);
 
     Route::prefix('user')->group(function ($router) {
@@ -115,21 +115,21 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('documents-completed', [OrganizationController::class, 'documentsCompleted']);
         });
     });
+
+    //route tickets
+    $router->prefix('tickets')->group(function ($router) {
+        $router->get('/', [TicketController::class, 'index']);
+        $router->middleware('has.organization')->group(function ($router) {
+            $router->get('/get-organization-tickets', [TicketController::class, 'getTicketsForOrganization']);
+        });
+    });
+    //route threads
+    $router->middleware('has.organization')->prefix('threads')->group(function ($router) {
+        $router->post('/', [ThreadController::class, 'store']);
+    });
+
 });
 Route::get('organizations', [OrganizationController::class, 'index']);
+Route::post('/create-people-ticket', [TicketController::class, 'createPeopleTicket']);
 
-Route::middleware('auth:sanctum')->prefix('tickets')->group(function ($router) {
-    $router->get('/', [TicketController::class, 'index']);
-    $router->get('/get-organization-tickets', [TicketController::class, 'getTicketsForOrganization']);
-    $router->post('/create-people-ticket', [TicketController::class, 'createPeopleTicket'])->withoutMiddleware('auth:sanctum');
-    $router->get('/{ticketId}', [TicketController::class, 'show']);
-});
 
-Route::middleware('auth:sanctum')->prefix('threads')->group(function ($router) {
-    $router->post('/', [ThreadController::class, 'store']);
-});
-
-Route::middleware('auth:sanctum')->group(function ($router) {
-    $router->get('/provinces', [ProvinceController::class, 'index']);
-    $router->get('/get-cities/{provinceId}', [CityController::class, 'getCitiesByProvinceId']);
-});
