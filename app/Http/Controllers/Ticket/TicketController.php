@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Ticket;
 
 use Throwable;
 use Illuminate\Support\Facades\DB;
+use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TicketResource;
 use App\Enumerations\FileCategoryEnums;
 use App\Http\Resources\FullTicketResource;
 use Illuminate\Validation\ValidationException;
-use App\Http\Requests\Ticket\CreateTicketRequest;
+use App\Http\Requests\Ticket\createPeopleTicketRequest;
 use Infrastructure\Interfaces\ThreadRepositoryInterface;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
-use Vinkla\Hashids\Facades\Hashids;
 
 class TicketController extends Controller
 {
@@ -40,7 +40,7 @@ class TicketController extends Controller
         return new FullTicketResource($repository->show($ticketId));
     }
 
-    public function store(CreateTicketRequest $request)
+    public function createPeopleTicket(createPeopleTicketRequest $request)
     {
         /* @var TicketRepositoryInterface $ticketRepository */
         $ticketRepository = app(TicketRepositoryInterface::class);
@@ -53,7 +53,8 @@ class TicketController extends Controller
         try {
             DB::beginTransaction();
 
-            $ticket = $ticketRepository->store($request->all(), $user);
+            $ticket = $ticketRepository->createPeopleTicket($request->all(), $user);
+
             if ($request->hasFile('file')) {
                 $dir = 'tickets/' . Hashids::encode($ticket->id);
                 $fileId = uploadFile(

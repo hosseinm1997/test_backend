@@ -4,11 +4,10 @@ namespace App\Http\Requests\Ticket;
 
 use App\Rules\ValidMobileRule;
 use Illuminate\Validation\Rule;
-use App\Enumerations\Ticket\TypeEnum;
 use App\Enumerations\Ticket\PriorityEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTicketRequest extends FormRequest
+class createPeopleTicketRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,19 +26,15 @@ class CreateTicketRequest extends FormRequest
      */
     public function rules()
     {
-        $enumType = TypeEnum::getAllEnumType();
-
         return [
             'title' => 'required|string|min:2|max:255',
             'name' => 'required|string|min:2|max:255',
             'description' => 'required|string',
-            'mobile' => ['required|string', new ValidMobileRule()],
+            'mobile' => ['required', 'string', new ValidMobileRule()],
             'email' => 'required|email',
             'priority' => ['nullable', Rule::in(PriorityEnums::getEnumPriority())],
             'organization_id' => ['nullable', 'exists:organizations,id'],
-            'file' => 'nullable|mimes:jpg,bmp,png',
-            'send_type' => ['required', 'int', Rule::in($enumType)],
-            'receipt_type' => ['required', 'int', Rule::in($enumType)],
+            'file' => 'nullable|mimes:jpg,bmp,png'
         ];
     }
 }
