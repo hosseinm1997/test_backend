@@ -6,6 +6,7 @@ use Throwable;
 use Illuminate\Support\Facades\DB;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Controllers\Controller;
+use App\Enumerations\Ticket\TypeEnum;
 use App\Http\Resources\TicketResource;
 use App\Enumerations\FileCategoryEnums;
 use App\Http\Resources\FullTicketResource;
@@ -63,7 +64,13 @@ class TicketController extends Controller
                     FileCategoryEnums::THREAD_ATTACHMENT)['id'];
             }
 
-            $threadRepository->store($ticket->id, $fileId, $request->all(), $user);
+            $threadRepository->store(
+                $ticket->id,
+                TypeEnum::PEOPLE,
+                $fileId,
+                $request->all(),
+                $user
+            );
 
             DB::commit();
 

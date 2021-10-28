@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Thread;
 
 use Throwable;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Vinkla\Hashids\Facades\Hashids;
+use App\Http\Controllers\Controller;
 use App\Enumerations\FileCategoryEnums;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\Thread\CreateThreadRequest;
@@ -29,7 +29,13 @@ class ThreadController extends Controller
                     FileCategoryEnums::THREAD_ATTACHMENT)['id'];
             }
 
-            $thread = $threadRepository->store($request->input('ticket_id'), $fileId, $request->all(), auth()->user());
+            $thread = $threadRepository->store(
+                $request->input('ticket_id'),
+                $request->input('send_type'),
+                $fileId,
+                $request->all(),
+                auth()->user()
+            );
 
             DB::commit();
 
