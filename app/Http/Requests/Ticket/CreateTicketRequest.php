@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Ticket;
 
+use App\Rules\ValidMobileRule;
 use Illuminate\Validation\Rule;
 use App\Enumerations\Ticket\TypeEnum;
 use App\Enumerations\Ticket\PriorityEnums;
@@ -32,7 +33,7 @@ class CreateTicketRequest extends FormRequest
             'title' => 'required|string|min:2|max:255',
             'name' => 'required|string|min:2|max:255',
             'description' => 'required|string',
-            'mobile' => 'required|string',
+            'mobile' => ['required|string', new ValidMobileRule()],
             'email' => 'required|email',
             'priority' => ['nullable', Rule::in(PriorityEnums::getEnumPriority())],
             'organization_id' => ['nullable', 'exists:organizations,id'],
