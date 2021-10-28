@@ -9,18 +9,27 @@ use App\Models\Organization;
 use App\Repositories\EnumerationRepository;
 use App\Repositories\OrganizationRepository;
 use Illuminate\Http\Request;
+use Infrastructure\Traits\prepareOrganizationDataTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrganizationController extends Controller
 {
+    use prepareOrganizationDataTrait;
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return array
      */
     public function index()
     {
-        return Organization::where('status',OrganizationStatusEnums::ACCEPTED_BY_MANAGER)->get();
+        $organizations = Organization::where('status',OrganizationStatusEnums::ACCEPTED_BY_MANAGER)->get()->toArray();
+
+        foreach ($organizations as &$organization) {
+            $this->prepareOrganization($organization);
+        }
+
+        return $organizations;
     }
 
     /**
@@ -57,12 +66,13 @@ class OrganizationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return array
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $data = auth_user_organization()->toArray();
+        $this->prepareOrganization($data);
+        return $data;
     }
 
     /**

@@ -105,16 +105,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [OrganizationController::class, 'store']);
 
         Route::middleware('has.organization')->group(function () {
-            Route::resource(
-                'organization',
-                OrganizationController::class
-            )->only([
-                'edit',
-                'update',
-            ]);
+
+            Route::get('/', [OrganizationController::class, 'show']);
+//            Route::put('/', [OrganizationController::class, 'update']);
 
             Route::post('document', [DocumentController::class, 'storeForOrganization']);
-
             Route::get('document', [DocumentController::class, 'index']);
 
             Route::post('documents-completed', [OrganizationController::class, 'documentsCompleted']);

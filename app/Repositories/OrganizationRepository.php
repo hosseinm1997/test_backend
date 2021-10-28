@@ -4,9 +4,12 @@ namespace App\Repositories;
 
 use App\Models\Organization;
 use App\Enumerations\OrganizationStatusEnums;
+use Infrastructure\Traits\prepareOrganizationDataTrait;
 
 class OrganizationRepository
 {
+    use prepareOrganizationDataTrait;
+
     public function create(array $data): array
     {
         $organization = new Organization();
@@ -35,9 +38,12 @@ class OrganizationRepository
             'typeRelation',
             'categoryRelation',
             'statusRelation',
+            'logoFileRelation'
         ]);
 
-        return $organization->toArray();
+        $result = $organization->toArray();
+        $this->prepareOrganization($result);
+        return $result;
     }
 
     public function userAlreadyHasOrganization(array $data): array
