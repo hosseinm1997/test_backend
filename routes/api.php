@@ -31,11 +31,11 @@ use Illuminate\Http\Request;
 
 Route::post('test', function (Request $request) {
 
-    $fileUploaded = uploadFile($request->file,DocumentTypeEnums::THREAD, 33);
+    $fileUploaded = uploadFile($request->file, DocumentTypeEnums::THREAD, 33);
 
     dd($fileUploaded);
 
-User::where('mobile', '09196145343')->get();
+    User::where('mobile', '09196145343')->get();
     return response()->json(['hello' => 'world']);
 });
 
@@ -67,12 +67,12 @@ Route::prefix('auth')->group(function ($router) {
 
 Route::get('logout', function () {
     Auth::logout();
-    return ["message" => "عملیات خروج با موفقیت انجام شد",'logout' => true, 'result' => true];
+    return ["message" => "عملیات خروج با موفقیت انجام شد", 'logout' => true, 'result' => true];
 });
 
 
 Route::middleware('auth:sanctum')->group(function ($router) {
-    Route::post('login', [ 'as' => 'login', 'uses' => 'LoginController@do']);
+    Route::post('login', ['as' => 'login', 'uses' => 'LoginController@do']);
 
     Route::prefix('user')->group(function ($router) {
         Route::get('/', [ProfileController::class, 'getAuthUser']);
@@ -125,10 +125,7 @@ Route::middleware('auth:sanctum')->group(function ($router) {
                 'news',
                 NewsController::class
             );
-
-            $router->prefix('news')->group(function ($router) {
-                $router->post('upload-file', [NewsController::class, 'uploadFileNews']);
-            });
+            $router->post('upload-file', [NewsController::class, 'uploadFileNews']);
         });
     });
 });
