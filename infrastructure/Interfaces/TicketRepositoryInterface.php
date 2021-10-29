@@ -8,7 +8,9 @@ interface TicketRepositoryInterface
 {
     public function index();
 
-    public function getTicketsForOrganization();
+    public function getOrganizationTickets();
+
+    public function getOrganizationTicket(int $ticketId);
 
     public function show(int $ticketId);
 

@@ -118,7 +118,8 @@ Route::middleware('auth:sanctum')->group(function ($router) {
     $router->prefix('tickets')->group(function ($router) {
         $router->get('/', [TicketController::class, 'index']);
         $router->middleware('has.organization')->group(function ($router) {
-            $router->get('/get-organization-tickets', [TicketController::class, 'getTicketsForOrganization']);
+            $router->get('/get-organization-tickets', [TicketController::class, 'getOrganizationTickets']);
+            $router->get('/get-organization-ticket/{ticketId}', [TicketController::class, 'getOrganizationTicket']);
             $router->post('/create-ticket-to-management', [TicketController::class, 'createTicketToManagement']);
         });
     });

@@ -21,12 +21,20 @@ class TicketController extends Controller
         return TicketResource::collection($repository->index());
     }
 
-    public function getTicketsForOrganization()
+    public function getOrganizationTickets()
     {
         /* @var TicketRepositoryInterface $repository */
         $repository = app(TicketRepositoryInterface::class);
 
-        return TicketResource::collection($repository->getTicketsForOrganization());
+        return TicketResource::collection($repository->getOrganizationTickets());
+    }
+
+    public function getOrganizationTicket($ticketId)
+    {
+        /* @var TicketRepositoryInterface $repository */
+        $repository = app(TicketRepositoryInterface::class);
+
+        return new FullTicketResource($repository->getOrganizationTicket($ticketId));
     }
 
     public function show($ticketId)

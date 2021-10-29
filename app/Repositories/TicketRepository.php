@@ -14,13 +14,20 @@ class TicketRepository implements TicketRepositoryInterface
             ->filtered()->sorted()->latest()->paginate();
     }
 
-    public function getTicketsForOrganization()
+    public function getOrganizationTickets()
     {
         $organization = auth_user_organization();
 
-        return Ticket::query()
-            ->where('organization_id', $organization->id)
+        return Ticket::query()->where('organization_id', $organization->id)
             ->filtered()->sorted()->latest()->paginate();
+    }
+
+    public function getOrganizationTicket(int $ticketId)
+    {
+        $organization = auth_user_organization();
+
+        return Ticket::query()->where('id', $ticketId)
+            ->where('organization_id', $organization->id)->firstOrFail();
     }
 
     public function show($ticketId)
