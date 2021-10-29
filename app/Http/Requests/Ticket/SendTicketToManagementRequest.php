@@ -6,7 +6,7 @@ use Illuminate\Validation\Rule;
 use App\Enumerations\Ticket\PriorityEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTicketToManagementRequest extends FormRequest
+class SendTicketToManagementRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

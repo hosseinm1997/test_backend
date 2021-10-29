@@ -8,7 +8,7 @@ use App\Http\Resources\TicketResource;
 use App\Http\Resources\FullTicketResource;
 use App\Http\Requests\Ticket\CreatePeopleTicketRequest;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
-use App\Http\Requests\Ticket\CreateTicketToManagementRequest;
+use App\Http\Requests\Ticket\SendTicketToManagementRequest;
 use Infrastructure\Interfaces\Services\TicketServiceInterface;
 
 class TicketController extends Controller
@@ -58,7 +58,7 @@ class TicketController extends Controller
         );
     }
 
-    public function createTicketToManagement(CreateTicketToManagementRequest $request)
+    public function sendTicketToManagement(SendTicketToManagementRequest $request)
     {
         /* @var TicketServiceInterface $service */
         $service = app(TicketServiceInterface::class);

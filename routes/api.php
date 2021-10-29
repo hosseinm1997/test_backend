@@ -120,7 +120,7 @@ Route::middleware('auth:sanctum')->group(function ($router) {
         $router->middleware('has.organization')->group(function ($router) {
             $router->get('/get-organization-tickets', [TicketController::class, 'getOrganizationTickets']);
             $router->get('/get-organization-ticket/{ticketId}', [TicketController::class, 'getOrganizationTicket']);
-            $router->post('/create-ticket-to-management', [TicketController::class, 'createTicketToManagement']);
+            $router->post('/send-ticket-to-management', [TicketController::class, 'sendTicketToManagement']);
         });
     });
     //route threads
