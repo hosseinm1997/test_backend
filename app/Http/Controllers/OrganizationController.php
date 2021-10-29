@@ -5,32 +5,34 @@ namespace App\Http\Controllers;
 use App\Enumerations\FileCategoryEnums;
 use App\Enumerations\OrganizationStatusEnums;
 use App\Http\Requests\Organization\CreateOrganizationRequest;
-use App\Http\Requests\Organization\UpdateOrganizationRequest;
 use App\Models\Organization;
 use App\Repositories\EnumerationRepository;
 use App\Repositories\OrganizationRepository;
-use Hekmatinasser\Verta\Verta;
-use Infrastructure\Traits\prepareOrganizationDataTrait;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrganizationController extends Controller
 {
-    use prepareOrganizationDataTrait;
-
     /**
      * Display a listing of the resource.
      *
-     * @return array
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $organizations = Organization::where('status',OrganizationStatusEnums::ACCEPTED_BY_MANAGER)->get()->toArray();
+        return Organization::join('enumerations', 'organizations.category', '=' , 'enumerations.id')
+            ->select('organizations.*', 'enumerations.title as category_title')
+        ->where('status',OrganizationStatusEnums::ACCEPTED_BY_MANAGER)->get();
+    }
 
-        foreach ($organizations as &$organization) {
-            $this->prepareOrganization($organization);
-        }
-
-        return $organizations;
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -57,37 +59,35 @@ class OrganizationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return array
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        $data = auth_user_organization()->toArray();
-        $this->prepareOrganization($data);
-        return $data;
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateOrganizationRequest $request
-     * @return array
-     * @throws \Exception
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
-    public function update(UpdateOrganizationRequest $request)
+    public function update(Request $request, $id)
     {
-        $repo = new OrganizationRepository();
-        $data = $request->all();
-        $data['model'] = auth_user_organization();
-
-        if ($request->hasFile('logo')) {
-            $data['logoFileId'] = uploadFile(
-                $request->file('logo'),
-                'public/organizations/logos',
-                FileCategoryEnums::ORGANIZATION_ATTRIBUTES
-            )['id'];
-        }
-
-        return $repo->update($data);
+        //
     }
 
     /**
@@ -127,17 +127,7 @@ class OrganizationController extends Controller
         }
 
         $repo = new OrganizationRepository();
-        $result = $repo->setStatusAsWaitingForVerification(['organizationId' => auth_user_organization()->id]);
-
-        sendSmsByPattern(
-            auth_user()->mobile,
-            config('pattern.successful_upload'),
-            [
-                'time' => (new Verta())->format('Y/m/d H:i:s'),
-                'code' => env('PANEL_URL') . '/panel/profile'
-            ]
-        );
-
-        return $result;
+        return $repo->setStatusAsWaitingForVerification(['organizationId' => auth_user_organization()->id]);
     }
 }
+//

@@ -4,8 +4,10 @@ namespace App\Services\Ticket;
 
 use Throwable;
 use App\Models\User;
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Support\Facades\DB;
 use Vinkla\Hashids\Facades\Hashids;
+use App\Enumerations\Ticket\TypeEnum;
 use App\Enumerations\FileCategoryEnums;
 use Illuminate\Validation\ValidationException;
 use Infrastructure\Interfaces\ThreadRepositoryInterface;
@@ -32,6 +34,8 @@ class TicketService implements TicketServiceInterface
             $threadRepository->store($data, $user, $fileId, $ticket->id, $sendType);
 
             DB::commit();
+
+            $this->sendSms($ticket->mobile, $sendType, $receiptType);
 
             return ['message' => 'تیکت با موفقیت ایجاد شد', 'result' => true, 'ticket_id' => $ticket->id];
 
@@ -69,5 +73,14 @@ class TicketService implements TicketServiceInterface
         $dir = 'tickets/' . Hashids::encode($ticketId);
 
         return uploadFile($file, $dir, FileCategoryEnums::THREAD_ATTACHMENT)['id'];
+    }
+
+    private function sendSms($mobile, int $sendType, int $receiptType)
+    {
+        if ($sendType == TypeEnum::ORGANIZATION && $receiptType == TypeEnum::MANAGEMENT) {
+            sendSmsByPattern($mobile, config('pattern.successful_ticket'), [
+                'time' => (new Verta())->format('Y/m/d H:i:s')
+            ]);
+        }
     }
 }
