@@ -40,6 +40,28 @@ class TicketService implements TicketServiceInterface
         }
     }
 
+    public function createThread(array $data, User $user = null, $ticketId, $sendType)
+    {
+        /* @var ThreadRepositoryInterface $threadRepository  */
+        $threadRepository = app(ThreadRepositoryInterface::class);
+
+        try {
+            DB::beginTransaction();
+
+            $fileId = $this->getFileId($data['file'], $data['ticket_id']);
+
+            $thread = $threadRepository->store($data, $user, $fileId, $ticketId, $sendType);
+
+            DB::commit();
+
+            return ['message' => 'ترد با موفقیت ایجاد شد', 'result' => true, 'thread_id' => $thread->id];
+
+        } catch (ValidationException | Throwable $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
+    }
+
     private function getFileId($file, $ticketId)
     {
         $fileId = null;

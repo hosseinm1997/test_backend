@@ -29,10 +29,6 @@ class CreateThreadRequest extends FormRequest
             'ticket_id' => 'required|exists:tickets,id',
             'description' => 'required|string',
             'file' => 'nullable|mimes:jpg,bmp,png',
-            'send_type' => ['required', Rule::in([
-                TypeEnum::MANAGEMENT,
-                TypeEnum::ORGANIZATION
-            ])],
         ];
     }
 }
