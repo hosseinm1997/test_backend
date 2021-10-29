@@ -20,13 +20,14 @@ class TicketService implements TicketServiceInterface
         $ticketRepository = app(TicketRepositoryInterface::class);
         /* @var ThreadRepositoryInterface $threadRepository */
         $threadRepository = app(ThreadRepositoryInterface::class);
-
+        $fileId = null;
         try {
             DB::beginTransaction();
 
             $ticket = $ticketRepository->store($data, $user, $sendType, $receiptType);
 
-            $fileId = $this->getFileId($data['file'], $ticket->id);
+            if (isset($data['file_id']))
+                $fileId = $this->getFileId($data['file'], $ticket->id);
 
             $threadRepository->store($data, $user, $fileId, $ticket->id, $sendType);
 
@@ -44,11 +45,12 @@ class TicketService implements TicketServiceInterface
     {
         /* @var ThreadRepositoryInterface $threadRepository  */
         $threadRepository = app(ThreadRepositoryInterface::class);
-
+        $fileId = null;
         try {
             DB::beginTransaction();
 
-            $fileId = $this->getFileId($data['file'], $data['ticket_id']);
+            if (isset($data['file_id']))
+                $fileId = $this->getFileId($data['file'], $ticketId);
 
             $thread = $threadRepository->store($data, $user, $fileId, $ticketId, $sendType);
 
@@ -64,13 +66,8 @@ class TicketService implements TicketServiceInterface
 
     private function getFileId($file, $ticketId)
     {
-        $fileId = null;
-        if (!is_null($file)) {
-            $dir = 'tickets/' . Hashids::encode($ticketId);
+        $dir = 'tickets/' . Hashids::encode($ticketId);
 
-            $fileId = uploadFile($file, $dir, FileCategoryEnums::THREAD_ATTACHMENT)['id'];
-        }
-
-        return $fileId;
+        return uploadFile($file, $dir, FileCategoryEnums::THREAD_ATTACHMENT)['id'];
     }
 }
