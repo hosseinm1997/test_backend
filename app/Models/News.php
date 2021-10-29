@@ -11,6 +11,6 @@ class News extends Model
 
     public function getImgAttribute($value)
     {
-        return env('PANEL_URL') . DIRECTORY_SEPARATOR . $value;
+        return asset($value);
     }
 }
