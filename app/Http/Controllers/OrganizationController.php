@@ -9,6 +9,7 @@ use App\Http\Requests\Organization\UpdateOrganizationRequest;
 use App\Models\Organization;
 use App\Repositories\EnumerationRepository;
 use App\Repositories\OrganizationRepository;
+use Hekmatinasser\Verta\Verta;
 use Infrastructure\Traits\prepareOrganizationDataTrait;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -126,7 +127,17 @@ class OrganizationController extends Controller
         }
 
         $repo = new OrganizationRepository();
-        return $repo->setStatusAsWaitingForVerification(['organizationId' => auth_user_organization()->id]);
+        $result = $repo->setStatusAsWaitingForVerification(['organizationId' => auth_user_organization()->id]);
+
+        sendSmsByPattern(
+            auth_user()->mobile,
+            config('pattern.successful_upload'),
+            [
+                'time' => (new Verta())->format('Y/m/d H:i:s'),
+                'code' => env('PANEL_URL') . '/panel/profile'
+            ]
+        );
+
+        return $result;
     }
 }
-//

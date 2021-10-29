@@ -11,6 +11,6 @@ class News extends Model
 
     public function getImgAttribute($value)
     {
-        return 'https://sajamax.iranvue.ir/'.$value;
+        return env('PANEL_URL') . DIRECTORY_SEPARATOR . $value;
     }
 }
