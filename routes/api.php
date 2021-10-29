@@ -119,15 +119,13 @@ Route::middleware('auth:sanctum')->group(function ($router) {
         $router->post('/create-thread-to-management', [ThreadController::class, 'createThreadToManagement']);
     });
 
-    Route::prefix('news')->group(function ($router) {
         $router->middleware('has.organization')->group(function ($router) {
             $router->resource(
                 'news',
                 NewsController::class
             );
-            $router->post('upload-file', [NewsController::class, 'uploadFileNews']);
+            $router->post('news/upload-file', [NewsController::class, 'uploadFileNews']);
         });
-    });
 });
 
 Route::get('organizations', [OrganizationController::class, 'index']);
