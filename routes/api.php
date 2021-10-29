@@ -81,15 +81,6 @@ Route::middleware('auth:sanctum')->group(function ($router) {
 
     });
 
-    Route::resource(
-        'news',
-        NewsController::class
-    );
-
-    Route::prefix('news')->group(function ($router) {
-        Route::post('upload-file', [NewsController::class, 'uploadFileNews']);
-    });
-
     Route::prefix('announcement')->group(function ($router) {
         Route::get('/', [AnnouncementController::class, 'index']);
         Route::post('/', [AnnouncementController::class, 'store']);
@@ -127,7 +118,21 @@ Route::middleware('auth:sanctum')->group(function ($router) {
     $router->middleware('has.organization')->prefix('threads')->group(function ($router) {
         $router->post('/create-thread-to-management', [ThreadController::class, 'createThreadToManagement']);
     });
+
+    Route::prefix('news')->group(function ($router) {
+        $router->middleware('has.organization')->group(function ($router) {
+            $router->resource(
+                'news',
+                NewsController::class
+            );
+
+            $router->prefix('news')->group(function ($router) {
+                $router->post('upload-file', [NewsController::class, 'uploadFileNews']);
+            });
+        });
+    });
 });
+
 Route::get('organizations', [OrganizationController::class, 'index']);
 Route::post('/create-people-ticket', [TicketController::class, 'createPeopleTicket']);
 
