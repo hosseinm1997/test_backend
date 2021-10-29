@@ -28,8 +28,6 @@ class CreateTicketToManagementRequest extends FormRequest
         return [
             'title' => 'required|string|min:2|max:255',
             'description' => 'required|string',
-            'priority' => ['nullable', Rule::in(PriorityEnums::getEnumPriority())],
-            'organization_id' => ['required', 'exists:organizations,id'],
             'file' => 'nullable|mimes:jpg,bmp,png'
         ];
     }

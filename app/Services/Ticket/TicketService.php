@@ -14,7 +14,7 @@ use Infrastructure\Interfaces\Services\TicketServiceInterface;
 
 class TicketService implements TicketServiceInterface
 {
-    public function createTicket(array $data, User $user = null, int $sendType, int $receiptType)
+    public function createTicket(array $data, User $user = null, int $sendType, int $receiptType): array
     {
         /* @var TicketRepositoryInterface $ticketRepository */
         $ticketRepository = app(TicketRepositoryInterface::class);
@@ -41,7 +41,7 @@ class TicketService implements TicketServiceInterface
         }
     }
 
-    public function createThread(array $data, User $user = null, $ticketId, $sendType)
+    public function createThread(array $data, User $user = null, $ticketId, $sendType): array
     {
         /* @var ThreadRepositoryInterface $threadRepository  */
         $threadRepository = app(ThreadRepositoryInterface::class);
@@ -64,7 +64,7 @@ class TicketService implements TicketServiceInterface
         }
     }
 
-    private function getFileId($file, $ticketId)
+    private function getFileId($file, int $ticketId)
     {
         $dir = 'tickets/' . Hashids::encode($ticketId);
 

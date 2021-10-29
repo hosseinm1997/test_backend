@@ -40,7 +40,7 @@ class TicketRepository implements TicketRepositoryInterface
            'name'               => $data['name'] ?? $user->first_name . $user->last_name,
            'mobile'             => $data['mobile'] ?? $user->mobile,
            'email'              => $data['email'] ?? null,
-           'organization_id'    => $data['organization_id'] ?? null,
+           'organization_id'    => $data['organization_id'] ?? auth_user_organization()->id,
            'created_by'         => optional($user)->id,
            'send_type'          => $sendType,
            'receipt_type'       => $receiptType,
