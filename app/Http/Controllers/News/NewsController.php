@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\News;
 
-use App\Enumerations\DocumentTypeEnums;
 use App\Enumerations\FileCategoryEnums;
 use App\Http\Controllers\Controller;
 use App\Models\News;
-use Hashids\Hashids;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Vinkla\Hashids\Facades\Hashids;
 
 class NewsController extends Controller
 {
