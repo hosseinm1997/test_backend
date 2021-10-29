@@ -124,7 +124,7 @@ Route::middleware('auth:sanctum')->group(function ($router) {
     });
     //route threads
     $router->middleware('has.organization')->prefix('threads')->group(function ($router) {
-        $router->post('/create-thread-to-management', [ThreadController::class, 'store']);
+        $router->post('/create-thread-to-management', [ThreadController::class, 'createThreadToManagement']);
     });
 });
 Route::get('organizations', [OrganizationController::class, 'index']);

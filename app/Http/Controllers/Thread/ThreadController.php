@@ -9,7 +9,7 @@ use Infrastructure\Interfaces\Services\TicketServiceInterface;
 
 class ThreadController extends Controller
 {
-    public function store(CreateThreadRequest $request)
+    public function createThreadToManagement(CreateThreadRequest $request)
     {
         /* @var TicketServiceInterface $service */
         $service = app(TicketServiceInterface::class);
