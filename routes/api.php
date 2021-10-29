@@ -5,12 +5,10 @@ use App\Http\Controllers\Announcement\AnnouncementController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\CityController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\OrganizationController;
-use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\Thread\ThreadController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\User\ProfileController;
@@ -73,7 +71,7 @@ Route::get('logout', function () {
 });
 
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function ($router) {
     Route::post('login', [ 'as' => 'login', 'uses' => 'LoginController@do']);
 
     Route::prefix('user')->group(function ($router) {
@@ -105,35 +103,32 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [OrganizationController::class, 'store']);
 
         Route::middleware('has.organization')->group(function () {
-            Route::resource(
-                'organization',
-                OrganizationController::class
-            )->only([
-                'edit',
-                'update',
-            ]);
+
+            Route::get('/', [OrganizationController::class, 'show']);
+            Route::put('/', [OrganizationController::class, 'update']);
 
             Route::post('document', [DocumentController::class, 'storeForOrganization']);
-
             Route::get('document', [DocumentController::class, 'index']);
 
             Route::post('documents-completed', [OrganizationController::class, 'documentsCompleted']);
         });
     });
+
+    //route tickets
+    $router->prefix('tickets')->group(function ($router) {
+        $router->get('/', [TicketController::class, 'index']);
+        $router->middleware('has.organization')->group(function ($router) {
+            $router->get('/get-organization-tickets', [TicketController::class, 'getOrganizationTickets']);
+            $router->get('/get-organization-ticket/{ticketId}', [TicketController::class, 'getOrganizationTicket']);
+            $router->post('/send-ticket-to-management', [TicketController::class, 'sendTicketToManagement']);
+        });
+    });
+    //route threads
+    $router->middleware('has.organization')->prefix('threads')->group(function ($router) {
+        $router->post('/create-thread-to-management', [ThreadController::class, 'createThreadToManagement']);
+    });
 });
 Route::get('organizations', [OrganizationController::class, 'index']);
+Route::post('/create-people-ticket', [TicketController::class, 'createPeopleTicket']);
 
-Route::middleware('auth:sanctum')->prefix('tickets')->group(function ($router) {
-    $router->get('/', [TicketController::class, 'index']);
-    $router->post('/', [TicketController::class, 'store'])->withoutMiddleware('auth:sanctum');
-    $router->get('/{ticketId}', [TicketController::class, 'show']);
-});
 
-Route::middleware('auth:sanctum')->prefix('threads')->group(function ($router) {
-    $router->post('/', [ThreadController::class, 'store']);
-});
-
-Route::middleware('auth:sanctum')->group(function ($router) {
-    $router->get('/provinces', [ProvinceController::class, 'index']);
-    $router->get('/get-cities/{provinceId}', [CityController::class, 'getCitiesByProvinceId']);
-});

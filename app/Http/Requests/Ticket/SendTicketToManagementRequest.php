@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Thread;
+namespace App\Http\Requests\Ticket;
 
 use Illuminate\Validation\Rule;
-use App\Enumerations\Ticket\TypeEnum;
+use App\Enumerations\Ticket\PriorityEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateThreadRequest extends FormRequest
+class SendTicketToManagementRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +26,9 @@ class CreateThreadRequest extends FormRequest
     public function rules()
     {
         return [
-            'ticket_id' => 'required|exists:tickets,id',
+            'title' => 'required|string|min:2|max:255',
             'description' => 'required|string',
-            'file' => 'nullable|mimes:jpg,bmp,png',
+            'file' => 'nullable|mimes:jpg,bmp,png'
         ];
     }
 }

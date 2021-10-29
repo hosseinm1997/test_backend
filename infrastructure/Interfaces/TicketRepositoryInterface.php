@@ -8,7 +8,16 @@ interface TicketRepositoryInterface
 {
     public function index();
 
+    public function getOrganizationTickets();
+
+    public function getOrganizationTicket(int $ticketId);
+
     public function show(int $ticketId);
 
-    public function store(array $data, User $user = null);
+    public function store(
+        array $data,
+        User $user = null,
+        int $sendType,
+        int $receiptType
+    );
 }

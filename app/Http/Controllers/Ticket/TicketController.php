@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\Ticket;
 
-use Throwable;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Enumerations\Ticket\TypeEnum;
 use App\Http\Resources\TicketResource;
-use App\Enumerations\FileCategoryEnums;
 use App\Http\Resources\FullTicketResource;
-use Illuminate\Validation\ValidationException;
-use App\Http\Requests\Ticket\CreateTicketRequest;
-use Infrastructure\Interfaces\ThreadRepositoryInterface;
+use App\Http\Requests\Ticket\CreatePeopleTicketRequest;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
-use Vinkla\Hashids\Facades\Hashids;
+use App\Http\Requests\Ticket\SendTicketToManagementRequest;
+use Infrastructure\Interfaces\Services\TicketServiceInterface;
 
 class TicketController extends Controller
 {
@@ -24,6 +21,22 @@ class TicketController extends Controller
         return TicketResource::collection($repository->index());
     }
 
+    public function getOrganizationTickets()
+    {
+        /* @var TicketRepositoryInterface $repository */
+        $repository = app(TicketRepositoryInterface::class);
+
+        return TicketResource::collection($repository->getOrganizationTickets());
+    }
+
+    public function getOrganizationTicket($ticketId)
+    {
+        /* @var TicketRepositoryInterface $repository */
+        $repository = app(TicketRepositoryInterface::class);
+
+        return new FullTicketResource($repository->getOrganizationTicket($ticketId));
+    }
+
     public function show($ticketId)
     {
         /* @var TicketRepositoryInterface $repository */
@@ -32,37 +45,29 @@ class TicketController extends Controller
         return new FullTicketResource($repository->show($ticketId));
     }
 
-    public function store(CreateTicketRequest $request)
+    public function createPeopleTicket(createPeopleTicketRequest $request)
     {
-        /* @var TicketRepositoryInterface $ticketRepository */
-        $ticketRepository = app(TicketRepositoryInterface::class);
-        /* @var ThreadRepositoryInterface $threadRepository */
-        $threadRepository = app(ThreadRepositoryInterface::class);
+        /* @var TicketServiceInterface $service */
+        $service = app(TicketServiceInterface::class);
 
-        $fileId = null;
-        $user = auth()->user();
+        return $service->createTicket(
+            $request->all(),
+            auth_user(),
+            TypeEnum::PEOPLE,
+            TypeEnum::ORGANIZATION
+        );
+    }
 
-        try {
-            DB::beginTransaction();
+    public function sendTicketToManagement(SendTicketToManagementRequest $request)
+    {
+        /* @var TicketServiceInterface $service */
+        $service = app(TicketServiceInterface::class);
 
-            $ticket = $ticketRepository->store($request->all(), $user);
-            if ($request->hasFile('file')) {
-                $dir = 'tickets/' . Hashids::encode($ticket->id);
-                $fileId = uploadFile(
-                    $request->file('file'),
-                    $dir,
-                    FileCategoryEnums::THREAD_ATTACHMENT)['id'];
-            }
-
-            $threadRepository->store($ticket->id, $fileId, $request->all(), $user);
-
-            DB::commit();
-
-            return ['message' => 'تیکت با موفقیت ایجاد شد', 'result' => true, 'ticket_id' => $ticket->id];
-
-        } catch (ValidationException | Throwable $exception) {
-            DB::rollBack();
-            throw $exception;
-        }
+        return $service->createTicket(
+            $request->all(),
+            auth_user(),
+            TypeEnum::ORGANIZATION,
+            TypeEnum::MANAGEMENT
+        );
     }
 }

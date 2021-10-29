@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Organization;
+use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Vinkla\Hashids\Facades\Hashids;
@@ -79,13 +80,19 @@ class DocumentUploadService
     public function storeOrganizationDocument(int $type, UploadedFile $file, Organization $organization): array
     {
         if (!$this->canStoreThisOrganizationDocument($type, $organization)) {
-            throw new \Exception('مدارک شما ارسال شده است و امکان ارسال مجدد نمی باشد!');
+            abort(
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+        'مدارک شما ارسال شده است و امکان ارسال مجدد نمی باشد!'
+            );
         }
 
         try {
             $address = $this->upload($file, $this->dirMapping[$type], $organization->id);
         } catch (\Throwable $exception) {
-            throw new \Exception('امکان ارسال فایل وجود ندارد!');
+            abort(
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                'امکان ارسال فایل وجود ندارد!'
+            );
         }
 
         try {
@@ -136,18 +143,26 @@ class DocumentUploadService
     public function storeUserDocument(int $type, UploadedFile $file, User $user): array
     {
         if ($type != DocumentTypeEnums::NATIONAL_CARD_PICTURE) {
-            throw new \Exception('نوع مدرک معتبر نیست!');
+            abort(
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                'نوع مدرک معتبر نیست!'
+            );
         }
 
         if ($this->hasAnyPendingUserDocument($type, $user->id)) {
-            throw new \Exception('مدارک شما ارسال شده است و امکان ارسال مجدد نمی باشد!');
+            abort(
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                'مدارک شما ارسال شده است و امکان ارسال مجدد نمی باشد!'
+            );
         }
 
         try {
             $address = $this->upload($file, $this->dirMapping[$type], $user->id);
         } catch (\Throwable $exception) {
-            dd($exception);
-            throw new \Exception('امکان ارسال فایل وجود ندارد!', );
+            abort(
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                'امکان ارسال فایل وجود ندارد!'
+            );
         }
 
         try {
