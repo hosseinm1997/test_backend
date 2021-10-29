@@ -45,8 +45,8 @@ class ProfileController extends Controller
                 Password::min(8)
 //                    ->mixedCase()
 //                    ->letters()
-                    ->numbers()
-                    ->uncompromised(),
+          //          ->numbers()
+            //        ->uncompromised(),
             ]
         ]);
 
