@@ -37,10 +37,10 @@ class TicketRepository implements TicketRepositoryInterface
     {
         return Ticket::query()->create([
            'title'              => $data['title'],
-           'name'               => $data['name'],
-           'mobile'             => $data['mobile'],
-           'email'              => $data['email'],
-           'organization_id'    => $data['organization_id'],
+           'name'               => $data['name'] ?? $user->first_name . $user->last_name,
+           'mobile'             => $data['mobile'] ?? $user->mobile,
+           'email'              => $data['email'] ?? null,
+           'organization_id'    => $data['organization_id'] ?? null,
            'created_by'         => optional($user)->id,
            'send_type'          => $sendType,
            'receipt_type'       => $receiptType,

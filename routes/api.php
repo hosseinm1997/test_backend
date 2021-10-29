@@ -5,12 +5,10 @@ use App\Http\Controllers\Announcement\AnnouncementController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\CityController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\OrganizationController;
-use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\Thread\ThreadController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\User\ProfileController;
@@ -121,6 +119,7 @@ Route::middleware('auth:sanctum')->group(function ($router) {
         $router->get('/', [TicketController::class, 'index']);
         $router->middleware('has.organization')->group(function ($router) {
             $router->get('/get-organization-tickets', [TicketController::class, 'getTicketsForOrganization']);
+            $router->post('/create-management-ticket', [TicketController::class, 'createTicketToManagement']);
         });
     });
     //route threads

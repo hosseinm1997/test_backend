@@ -7,7 +7,7 @@ use Illuminate\Validation\Rule;
 use App\Enumerations\Ticket\PriorityEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
-class createPeopleTicketRequest extends FormRequest
+class CreatePeopleTicketRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,7 +33,7 @@ class createPeopleTicketRequest extends FormRequest
             'mobile' => ['required', 'string', new ValidMobileRule()],
             'email' => 'required|email',
             'priority' => ['nullable', Rule::in(PriorityEnums::getEnumPriority())],
-            'organization_id' => ['nullable', 'exists:organizations,id'],
+            'organization_id' => ['required', 'exists:organizations,id'],
             'file' => 'nullable|mimes:jpg,bmp,png'
         ];
     }
