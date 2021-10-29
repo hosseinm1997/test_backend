@@ -25,8 +25,8 @@ class TicketService implements TicketServiceInterface
             DB::beginTransaction();
 
             $ticket = $ticketRepository->store($data, $user, $sendType, $receiptType);
-
-            if (isset($data['file_id']))
+;
+            if (isset($data['file']))
                 $fileId = $this->getFileId($data['file'], $ticket->id);
 
             $threadRepository->store($data, $user, $fileId, $ticket->id, $sendType);
@@ -49,7 +49,7 @@ class TicketService implements TicketServiceInterface
         try {
             DB::beginTransaction();
 
-            if (isset($data['file_id']))
+            if (isset($data['file']))
                 $fileId = $this->getFileId($data['file'], $ticketId);
 
             $thread = $threadRepository->store($data, $user, $fileId, $ticketId, $sendType);
