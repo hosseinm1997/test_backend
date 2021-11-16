@@ -25,6 +25,7 @@ class AddRoleToUserRequest extends FormRequest
     {
         return [
             'role_id' => 'nullable|array',
+            'user_id' => 'required|exists:users,id',
             'role_id.*' => 'required|exists:roles,id',
         ];
     }
