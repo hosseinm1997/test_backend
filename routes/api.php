@@ -128,6 +128,8 @@ Route::middleware('auth:sanctum')->group(function ($router) {
     });
 
     $router->post('{user}/add-role', 'UserController@addRoleToUser')->name('user.add.role');//todo add middleware
+    $router::get('/get-permissions', 'PermissionsController@getPermissions');
+    $router::get('/get-roles', 'RoleController@getRoles');
 });
 
 Route::get('organizations', [OrganizationController::class, 'index']);
