@@ -47,6 +47,8 @@ class User extends Authenticatable implements CanResetPassword
         //
     ];
 
+    protected $guard_name = 'api';
+
     public function sendPasswordResetNotification($token)
     {
         $address = env('PANEL_URL') . '/recovery-password?token=' . $token .'&mobile='.request()->mobile;
