@@ -119,13 +119,15 @@ Route::middleware('auth:sanctum')->group(function ($router) {
         $router->post('/create-thread-to-management', [ThreadController::class, 'createThreadToManagement']);
     });
 
-        $router->middleware('has.organization')->group(function ($router) {
-            $router->resource(
-                'news',
-                NewsController::class
-            );
-            $router->post('news/upload-file', [NewsController::class, 'uploadFileNews']);
-        });
+    $router->middleware('has.organization')->group(function ($router) {
+        $router->resource(
+            'news',
+            NewsController::class
+        );
+        $router->post('news/upload-file', [NewsController::class, 'uploadFileNews']);
+    });
+
+    $router->post('{user}/add-role', 'UserController@addRoleToUser')->name('user.add.role');//todo add middleware
 });
 
 Route::get('organizations', [OrganizationController::class, 'index']);
