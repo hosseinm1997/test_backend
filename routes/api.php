@@ -9,9 +9,12 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\RolePermissions\PermissionController;
+use App\Http\Controllers\RolePermissions\RoleController;
 use App\Http\Controllers\Thread\ThreadController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\UserController;
 use App\Models\Enumeration;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -119,13 +122,17 @@ Route::middleware('auth:sanctum')->group(function ($router) {
         $router->post('/create-thread-to-management', [ThreadController::class, 'createThreadToManagement']);
     });
 
-        $router->middleware('has.organization')->group(function ($router) {
-            $router->resource(
-                'news',
-                NewsController::class
-            );
-            $router->post('news/upload-file', [NewsController::class, 'uploadFileNews']);
-        });
+    $router->middleware('has.organization')->group(function ($router) {
+        $router->resource(
+            'news',
+            NewsController::class
+        );
+        $router->post('news/upload-file', [NewsController::class, 'uploadFileNews']);
+    });
+
+    $router->post('/add-role-to-user', [UserController::class , 'addRoleToUser'])->name('user.add.role');//todo add middleware
+    $router->get('/get-permissions', [PermissionController::class ,'getPermissions']);
+    $router->get('/get-roles', [RoleController::class, 'getRoles']);
 });
 
 Route::get('organizations', [OrganizationController::class, 'index']);
