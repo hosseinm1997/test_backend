@@ -110,14 +110,14 @@ Route::middleware('auth:sanctum')->group(function ($router) {
 
     //route tickets
     $router->prefix('tickets')->group(function ($router) {
-        $router->get('/', [TicketController::class, 'index']);
+        //organization service ticket
         $router->middleware('has.organization')->group(function ($router) {
             $router->get('/get-organization-tickets', [TicketController::class, 'getOrganizationTickets']);
             $router->get('/get-organization-ticket/{ticketId}', [TicketController::class, 'getOrganizationTicket']);
             $router->post('/send-ticket-to-management', [TicketController::class, 'sendOrganizationTicketToManagement']);
         });
 
-        //management
+        //management service ticket
         $router->middleware('role.management')->group(function ($router) {
             $router->post('/send-management-ticket-to-organization', [TicketController::class, 'sendManagementTicketToOrganization']);
         });
