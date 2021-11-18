@@ -118,8 +118,13 @@ Route::middleware('auth:sanctum')->group(function ($router) {
         });
 
         //management service ticket
-        $router->middleware('role.management')->group(function ($router) {
+        $router->middleware('role:management')->group(function ($router) {
             $router->post('/send-management-ticket-to-organization', [TicketController::class, 'sendManagementTicketToOrganization']);
+        });
+
+        //develop management service ticket
+        $router->middleware('role:develop.management')->group(function ($router) {
+            $router->post('/send-develop-management-ticket-to-management', [TicketController::class, 'sendDevelopManagementTicketToManagement']);
         });
 
     });

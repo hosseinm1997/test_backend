@@ -11,6 +11,7 @@ use Infrastructure\Interfaces\Services\TicketServiceInterface;
 use App\Http\Requests\Ticket\SendPeopleTicketToOrganizationRequest;
 use App\Http\Requests\Ticket\SendManagementTicketToOrganizationRequest;
 use App\Http\Requests\Ticket\SendOrganizationTicketToManagementRequest;
+use App\Http\Requests\Ticket\SendDevelopManagementTicketToManagementRequest;
 
 class TicketController extends Controller
 {
@@ -82,6 +83,19 @@ class TicketController extends Controller
             auth_user(),
             TypeEnum::MANAGEMENT,
             TypeEnum::ORGANIZATION
+        );
+    }
+
+    public function sendDevelopManagementTicketToManagement(SendDevelopManagementTicketToManagementRequest $request)
+    {
+        /* @var TicketServiceInterface $service */
+        $service = app(TicketServiceInterface::class);
+
+        return $service->createTicket(
+            $request->all(),
+            auth_user(),
+            TypeEnum::DEVELOP_MANAGEMENT,
+            TypeEnum::MANAGEMENT
         );
     }
 }
