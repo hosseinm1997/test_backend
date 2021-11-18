@@ -34,6 +34,8 @@ class EnumerationSeeder extends Seeder
 
             // 27 - 43
             Enumerations\DocumentTypeEnums::provideDataToSeed(),
+
+            Enumerations\Ticket\TypeEnum::provideDataToSeed(),
         );
 
         Enumeration::query()->upsert($data, 'id');
