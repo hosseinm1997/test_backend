@@ -25,7 +25,7 @@ class SendManagementTicketToOrganizationRequest extends FormRequest
     {
         return [
             'title' => 'required|string|min:2|max:255',
-            'organizaion_id' => 'required|string|min:2|max:255',
+            'organization_id' => ['required', 'exists:organizations,id'],
             'description' => 'required|string',
             'file' => 'nullable|mimes:jpg,bmp,png'
         ];
