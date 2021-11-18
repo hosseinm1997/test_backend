@@ -130,9 +130,11 @@ Route::middleware('auth:sanctum')->group(function ($router) {
         $router->post('news/upload-file', [NewsController::class, 'uploadFileNews']);
     });
 
-    $router->post('/add-role-to-user', [UserController::class , 'addRoleToUser'])->name('user.add.role');//todo add middleware
-    $router->get('/get-permissions', [PermissionController::class ,'getPermissions']);
-    $router->get('/get-roles', [RoleController::class, 'getRoles']);
+    $router->middleware('role:manage.rolePermissions')->group(function ($router) {
+        $router->post('/add-role-to-user', [UserController::class , 'addRoleToUser']);
+        $router->get('/get-permissions', [PermissionController::class ,'getPermissions']);
+        $router->get('/get-roles', [RoleController::class, 'getRoles']);
+    });
 });
 
 Route::get('organizations', [OrganizationController::class, 'index']);
