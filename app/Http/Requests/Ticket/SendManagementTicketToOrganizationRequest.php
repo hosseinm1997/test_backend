@@ -4,7 +4,7 @@ namespace App\Http\Requests\Ticket;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class sendOrganizationTicketToManagementRequest extends FormRequest
+class SendManagementTicketToOrganizationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,6 +25,7 @@ class sendOrganizationTicketToManagementRequest extends FormRequest
     {
         return [
             'title' => 'required|string|min:2|max:255',
+            'organizaion_id' => 'required|string|min:2|max:255',
             'description' => 'required|string',
             'file' => 'nullable|mimes:jpg,bmp,png'
         ];

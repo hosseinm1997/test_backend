@@ -116,6 +116,12 @@ Route::middleware('auth:sanctum')->group(function ($router) {
             $router->get('/get-organization-ticket/{ticketId}', [TicketController::class, 'getOrganizationTicket']);
             $router->post('/send-ticket-to-management', [TicketController::class, 'sendOrganizationTicketToManagement']);
         });
+
+        //management
+        $router->middleware('role.management')->group(function ($router) {
+            $router->post('/send-management-ticket-to-organization', [TicketController::class, 'sendManagementTicketToOrganization']);
+        });
+
     });
     //route threads
     $router->middleware('has.organization')->prefix('threads')->group(function ($router) {

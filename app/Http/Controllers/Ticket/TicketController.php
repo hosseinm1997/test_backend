@@ -8,8 +8,9 @@ use App\Http\Resources\TicketResource;
 use App\Http\Resources\FullTicketResource;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
 use Infrastructure\Interfaces\Services\TicketServiceInterface;
-use App\Http\Requests\Ticket\sendPeopleTicketToOrganizationRequest;
-use App\Http\Requests\Ticket\sendOrganizationTicketToManagementRequest;
+use App\Http\Requests\Ticket\SendPeopleTicketToOrganizationRequest;
+use App\Http\Requests\Ticket\SendManagementTicketToOrganizationRequest;
+use App\Http\Requests\Ticket\SendOrganizationTicketToManagementRequest;
 
 class TicketController extends Controller
 {
@@ -45,7 +46,7 @@ class TicketController extends Controller
         return new FullTicketResource($repository->show($ticketId));
     }
 
-    public function sendPeopleTicketToOrganization(sendPeopleTicketToOrganizationRequest $request)
+    public function sendPeopleTicketToOrganization(SendPeopleTicketToOrganizationRequest $request)
     {
         /* @var TicketServiceInterface $service */
         $service = app(TicketServiceInterface::class);
@@ -58,7 +59,7 @@ class TicketController extends Controller
         );
     }
 
-    public function sendOrganizationTicketToManagement(sendOrganizationTicketToManagementRequest $request)
+    public function sendOrganizationTicketToManagement(SendOrganizationTicketToManagementRequest $request)
     {
         /* @var TicketServiceInterface $service */
         $service = app(TicketServiceInterface::class);
@@ -68,6 +69,19 @@ class TicketController extends Controller
             auth_user(),
             TypeEnum::ORGANIZATION,
             TypeEnum::MANAGEMENT
+        );
+    }
+
+    public function sendManagementTicketToOrganization(SendManagementTicketToOrganizationRequest $request)
+    {
+        /* @var TicketServiceInterface $service */
+        $service = app(TicketServiceInterface::class);
+
+        return $service->createTicket(
+            $request->all(),
+            auth_user(),
+            TypeEnum::MANAGEMENT,
+            TypeEnum::ORGANIZATION
         );
     }
 }
