@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Enumerations\Ticket\TypeEnum;
 use App\Http\Resources\TicketResource;
 use App\Http\Resources\FullTicketResource;
-use App\Http\Requests\Ticket\CreatePeopleTicketRequest;
 use Infrastructure\Interfaces\TicketRepositoryInterface;
-use App\Http\Requests\Ticket\SendTicketToManagementRequest;
 use Infrastructure\Interfaces\Services\TicketServiceInterface;
+use App\Http\Requests\Ticket\sendPeopleTicketToOrganizationRequest;
+use App\Http\Requests\Ticket\sendOrganizationTicketToManagementRequest;
 
 class TicketController extends Controller
 {
@@ -45,7 +45,7 @@ class TicketController extends Controller
         return new FullTicketResource($repository->show($ticketId));
     }
 
-    public function createPeopleTicket(createPeopleTicketRequest $request)
+    public function sendPeopleTicketToOrganization(sendPeopleTicketToOrganizationRequest $request)
     {
         /* @var TicketServiceInterface $service */
         $service = app(TicketServiceInterface::class);
@@ -58,7 +58,7 @@ class TicketController extends Controller
         );
     }
 
-    public function sendTicketToManagement(SendTicketToManagementRequest $request)
+    public function sendOrganizationTicketToManagement(sendOrganizationTicketToManagementRequest $request)
     {
         /* @var TicketServiceInterface $service */
         $service = app(TicketServiceInterface::class);

@@ -114,7 +114,7 @@ Route::middleware('auth:sanctum')->group(function ($router) {
         $router->middleware('has.organization')->group(function ($router) {
             $router->get('/get-organization-tickets', [TicketController::class, 'getOrganizationTickets']);
             $router->get('/get-organization-ticket/{ticketId}', [TicketController::class, 'getOrganizationTicket']);
-            $router->post('/send-ticket-to-management', [TicketController::class, 'sendTicketToManagement']);
+            $router->post('/send-ticket-to-management', [TicketController::class, 'sendOrganizationTicketToManagement']);
         });
     });
     //route threads
@@ -138,6 +138,6 @@ Route::middleware('auth:sanctum')->group(function ($router) {
 });
 
 Route::get('organizations', [OrganizationController::class, 'index']);
-Route::post('/create-people-ticket', [TicketController::class, 'createPeopleTicket']);
+Route::post('/create-people-ticket', [TicketController::class, 'sendPeopleTicketToOrganization']);
 
 
