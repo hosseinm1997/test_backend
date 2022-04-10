@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['https://sajamax.iran.liara.run'],
 
     'allowed_origins_patterns' => [],
 

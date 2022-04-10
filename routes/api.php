@@ -31,6 +31,11 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('test', function (Request $request) {
+    $log = \App\Models\Log::get();
+
+    return $log;
+});
 
 Route::post('test', function (Request $request) {
 
